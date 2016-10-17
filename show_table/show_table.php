@@ -41,7 +41,7 @@ define('PASSWORD','57ac91865e5064f231cf620988223590');   // If you want to chang
 
    // Check if the password is valid; if not, stop immediatly
    $password=filter_input(INPUT_GET, 'password', FILTER_SANITIZE_STRING);
-   if(md5($password)!==PASSWORD) die('Invalid password');
+   if(md5($password)!==PASSWORD) { header('HTTP/1.0 403 Forbidden'); die('Invalid password'); }
 
    // Ok, password valid, get the requested format : HTML or RAW.  If nothing is specified, HTML will be the default one
    $format=strtoupper(filter_input(INPUT_GET, 'format', FILTER_SANITIZE_STRING));
