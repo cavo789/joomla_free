@@ -34,4 +34,13 @@ http:// youriste/show_table.php?password=Joomla&format=RAW
 ### To get a HTML output 
 http:// youriste/show_table.php?password=Joomla&format=HTML
 
+# Images 
+
+HTML output with filtering and column sortering
 <img src="https://github.com/cavo789/joomla_free/blob/master/show_table/sample.png" />
+
+Creation of a data connection in Excel
+<img src="https://github.com/cavo789/joomla_free/blob/master/show_table/worksheet.png" />
+
+Then, in Excel, refresh the list to get the latest version of your data
+<img src="https://github.com/cavo789/joomla_free/blob/master/show_table/refresh.png" />
