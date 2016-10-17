@@ -26,13 +26,13 @@ To make this script yours :
 Start a browser and run the file.
 
 You'll need to provide the password.  By default, it's Joomla so use an URL like this one :
-http:// youriste/show_table.php?password=Joomla
+http:// yoursite/show_table.php?password=Joomla
 
 ### To get a RAW output 
-http:// youriste/show_table.php?password=Joomla&format=RAW
+http:// yoursite/show_table.php?password=Joomla&format=RAW
 
 ### To get a HTML output 
-http:// youriste/show_table.php?password=Joomla&format=HTML
+http:// yoursite/show_table.php?password=Joomla&format=HTML
 
 # Images 
 
