@@ -33,15 +33,18 @@ define('SQL','SELECT C.id As Article_ID, C.title As Article_Title, G.title As Ca
 
 // Root folder of Joomla. If you've save this script in the root folder of Joomla, just leave __DIR__ otherwise you'll need
 // to update this constant and specify your own root
-//define('ROOT',__DIR__); 
-define('ROOT','c:\christophe\sites\aesecure'); 
+define('ROOT',__DIR__); 
 
 // Password to use.  The default one is "Joomla"
 define('PASSWORD','57ac91865e5064f231cf620988223590');   // If you want to change, use an online tool like f.i. http://www.md5.cz/
 
    // Check if the password is valid; if not, stop immediatly
    $password=filter_input(INPUT_GET, 'password', FILTER_SANITIZE_STRING);
-   if(md5($password)!==PASSWORD) { header('HTTP/1.0 403 Forbidden'); die('Invalid password'); }
+   if(md5($password)!==PASSWORD) { 
+      header('HTTP/1.0 403 Forbidden'); 
+	  echo '<form action="'.$_SERVER['PHP_SELF'].'" method="GET">Password: <input type="text" name="password" /><input class="Submit" type="submit" name="submit" /></form>';
+	  die(); 
+	  }
 
    // Ok, password valid, get the requested format : HTML or RAW.  If nothing is specified, HTML will be the default one
    $format=strtoupper(filter_input(INPUT_GET, 'format', FILTER_SANITIZE_STRING));
