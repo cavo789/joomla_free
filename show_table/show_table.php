@@ -33,7 +33,8 @@ define('SQL','SELECT C.id As Article_ID, C.title As Article_Title, G.title As Ca
 
 // Root folder of Joomla. If you've save this script in the root folder of Joomla, just leave __DIR__ otherwise you'll need
 // to update this constant and specify your own root
-define('ROOT',__DIR__); 
+//define('ROOT',__DIR__); 
+define('ROOT','C:\Christophe\Sites\aesecure'); 
 
 // Password to use.  The default one is "Joomla"
 define('PASSWORD','57ac91865e5064f231cf620988223590');   // If you want to change, use an online tool like f.i. http://www.md5.cz/
@@ -78,11 +79,14 @@ define('PASSWORD','57ac91865e5064f231cf620988223590');   // If you want to chang
       '<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8;" />';
 
    if (!$RAW) {
-      echo '<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" media="screen" />';
+	  
+      echo '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">';
 	  echo '<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.25.3/css/theme.ice.min.css" rel="stylesheet" media="screen" />';
    }
    
    echo '</head><body>';
+   
+   if ($RAW!=TRUE) echo '<div style="margin:10px;">';
 
    // Run the query and display the table
    
@@ -106,14 +110,14 @@ define('PASSWORD','57ac91865e5064f231cf620988223590');   // If you want to chang
 	  echo '<tr>'.$line.'</tr>';		
    }
    
-   echo '</tbody>';   
-   
-   echo '</table>';
+   echo '</tbody></table>';
 
    if (!$RAW) {
-      echo '<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>';
-      echo '<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>';
-      echo '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.25.3/js/jquery.tablesorter.combined.min.js"></script>';
+      echo '<p><strong>Number of records &nbsp;:&nbsp;'.number_format(count($rows)).'</strong></p>';
+	  echo '</div>';
+      echo '<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>';
+      echo '<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>';
+      echo '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.27.8/js/jquery.tablesorter.combined.min.js"></script>';
       echo '<script>'.
          '$("#tbl").tablesorter({'.
          '   theme: "ice",'.
