@@ -103,7 +103,7 @@ define('PASSWORD','57ac91865e5064f231cf620988223590');   // If you want to chang
    
    // Output the list of fields name
    $line='';   
-   foreach ($rows[0] as $field => $value) $line.='<td>'.$field.'</td>';
+   foreach ($rows[0] as $field => $value) $line.='<th>'.$field.'</th>';   // Add class="filter-select filter-exact" if you wish to provide an exact match and not a free filtering
    echo '<thead><tr>'.$line.'</tr></thead>';
  
    echo '<tbody>';
