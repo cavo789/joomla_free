@@ -6,7 +6,7 @@ In this repository, you'll find a few scripts that I've written for my own use. 
 
 kill_folder.php will allow to quickly remove a folder structure i.e. including subfolders by running the script from an URL.  This way is MUCH faster than killing a folder from a FTP client which is awfully slow.
 
-[go to show_table](https://github.com/cavo789/joomla_free/tree/master/kill_folder)
+[go to kill_folder](https://github.com/cavo789/joomla_free/tree/master/kill_folder)
 
 ## show_table
 
