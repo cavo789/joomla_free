@@ -2,7 +2,8 @@
 
 /**
  * Christophe Avonture - https://www.aesecure.com
- * Written date : 2016-10-16
+ * Written date  : 2016-10-16
+ * Last modified : 2016-10-19
  *
  * This small script will execute a SQL statement against the database of your Joomla website and will show the result in a nice HTML table (bootstrap).
  * When the output is HTML, the jQuery tablesorter will be used to provide extra functionnalities like sorting and filtering.
@@ -16,10 +17,9 @@
  *                will be used in a spreadsheet application or as input for an another program.
  *                For instance : in Excel, you can create a Data Query.  Use the &format=RAW parameter to get a perfect table for Excel.
  *
- *    Add yours : Add your own parameters !  For instance a filter, a selection (tablename=a_table), ... 
+ *    Add yours : Add your own parameters !  For instance a filter (period=xxxx), a selection (tablename=a_table), a limit (limit=10), ... 
  *
- *
- * Example : http://youriste/show_table.php?password=Joomla&format=RAW
+ * Example : https://youriste/show_table.php?password=Joomla&format=RAW
  *  
  */
 
@@ -31,10 +31,12 @@ define('SQL','SELECT C.id As Article_ID, C.title As Article_Title, G.title As Ca
    'WHERE (state=1) '.
    'ORDER BY C.created DESC');
 
+define('DS',DIRECTORY_SEPARATOR);
+   
 // Root folder of Joomla. If you've save this script in the root folder of Joomla, just leave __DIR__ otherwise you'll need
 // to update this constant and specify your own root
-//define('ROOT',__DIR__); 
-define('ROOT','C:\Christophe\Sites\aesecure'); 
+define('ROOT',__DIR__);  
+//define('ROOT',dirname(__DIR__));  // Use this line instead the previous if you've put the script in a subfolder of your website root 
 
 // Password to use.  The default one is "Joomla"
 define('PASSWORD','57ac91865e5064f231cf620988223590');   // If you want to change, use an online tool like f.i. http://www.md5.cz/
@@ -45,7 +47,9 @@ define('PASSWORD','57ac91865e5064f231cf620988223590');   // If you want to chang
       header('HTTP/1.0 403 Forbidden'); 
 	  echo '<form action="'.$_SERVER['PHP_SELF'].'" method="GET">Password: <input type="text" name="password" /><input class="Submit" type="submit" name="submit" /></form>';
 	  die(); 
-	  }
+   }
+   
+   if (!file_exists($config=rtrim(ROOT,DS).DS.'configuration.php')) die('<strong>The file '.$config.' can\'t be found, please review the ROOT constant to match your website root folder</strong>');
 
    // Ok, password valid, get the requested format : HTML or RAW.  If nothing is specified, HTML will be the default one
    $format=strtoupper(filter_input(INPUT_GET, 'format', FILTER_SANITIZE_STRING));
@@ -53,8 +57,8 @@ define('PASSWORD','57ac91865e5064f231cf620988223590');   // If you want to chang
 
    // Load the Joomla framework
    if (!defined('_JEXEC')) define('_JEXEC',1);
-   if (!defined('JPATH_BASE')) define('JPATH_BASE',rtrim(ROOT,DIRECTORY_SEPARATOR));
-   if (!defined('JPATH_PLATFORM')) define('JPATH_PLATFORM', ROOT.DIRECTORY_SEPARATOR.'libraries');
+   if (!defined('JPATH_BASE')) define('JPATH_BASE',rtrim(ROOT,DS));
+   if (!defined('JPATH_PLATFORM')) define('JPATH_PLATFORM', rtrim(ROOT,DS).DS.'libraries');
 
    //include joomla core files (disable errors because Joomla produde WARNINGs and NOTICES)
    $error=error_reporting();
