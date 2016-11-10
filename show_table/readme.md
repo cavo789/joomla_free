@@ -1,4 +1,4 @@
-# show_table
+# show_table #
 
 Sometimes you've the need to extract informations from your Joomla's database like f.i. the list of users, articles, ...
 
@@ -12,29 +12,32 @@ The need was also to make that list available in my spreadsheet software : creat
 By refreshing the worksheet, the spreadsheet software run the URL, get a newer version of the list and update the sheet.  
 And the magic is there.
 
-This script, show_table.php, allow this.
+This script, `show_table.php`, allow this.
 
-## Use it
+## Use it ##
+
 To make this script yours : 
 
-1. Download and copy the script on your Joomla website.   Put the script in the root folder of the site or in a subfolder.
-2. Edit the script and change the SQL : write your own.  If the script has been stored in an another folder than the Joomla root folder, update the value of the constant
+1. Download and copy the script on your Joomla website. Put the script in the root folder of the site or in a subfolder.
+2. Edit the `show_table.php` file and change the SQL : write your own. If the script has been stored in an another folder than the Joomla root folder, update the value of the constant
 3. If you wish, change the password : get a newer md5 hash.
 4. Save the file
 
-## Run it
+## Run it ##
+
 Start a browser and run the file.
 
-You'll need to provide the password.  By default, it's Joomla so use an URL like this one :
-http:// yoursite/show_table.php?password=Joomla
+You'll need to provide the password. By default, it's **`Joomla`** so use an URL like this one : http://yoursite/show_table.php?password=Joomla
 
-### To get a RAW output 
-http:// yoursite/show_table.php?password=Joomla&format=RAW
+### To get a RAW output ###
 
-### To get a HTML output 
-http:// yoursite/show_table.php?password=Joomla&format=HTML
+http://yoursite/show_table.php?password=Joomla&format=RAW
 
-# Images 
+### To get a HTML output ###
+
+http://yoursite/show_table.php?password=Joomla&format=HTML
+
+## Images ##
 
 HTML output with filtering and column sortering
 <img src="https://github.com/cavo789/joomla_free/blob/master/show_table/sample.png" />
@@ -44,3 +47,7 @@ Creation of a data connection in Excel
 
 Then, in Excel, refresh the list to get the latest version of your data
 <img src="https://github.com/cavo789/joomla_free/blob/master/show_table/refresh.png" />
+
+## Credits ##
+
+Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
