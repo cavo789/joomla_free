@@ -2,6 +2,14 @@
 
 In this repository, you'll find a few scripts that I've written for my own use.  Perhaps one of these scripts will be usefull for you too.
 
+## dump_db ##
+
+> Want a very easy way to take a dump of your Joomla's database ? Don't want to enter to your admin or hosting cpanel ?  Perhaps you don't have such access (just FTP and nothing else).
+
+The dump_db script will generate an extract of your database and immediatly send it to the browser (there is no file generated on the server).
+
+[go to dump_db](https://github.com/cavo789/joomla_free/tree/master/dump_db)
+
 ## folder_size ##
 
 > Do you know the size of your website ?  How many megabytes/gigabytes ? 
