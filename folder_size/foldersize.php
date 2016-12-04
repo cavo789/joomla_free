@@ -6,7 +6,7 @@
  * Calculate the size of a website.  This script can be stored at the root level of the website 
  * 
  */
- 
+
 define('DEBUG',FALSE);
 
 if(!defined('DS')) define('DS',DIRECTORY_SEPARATOR);
@@ -71,7 +71,7 @@ class aeSecureFct {
    public static function get_dir_size($directory, $recursive=true, &$arrSizeByExtension=array(), &$arrMD5=array()) {
       
       $FullSize = 0;          // Total size; included f.i. the big files
-	  $ReportedSize = 0;    // Size of small files (i.e. excluded big files (see constant BIG_FILES))
+      $ReportedSize = 0;    // Size of small files (i.e. excluded big files (see constant BIG_FILES))
       
       foreach (glob(rtrim($directory, DS).DS.'*', GLOB_NOSORT) as $filename) {
             
@@ -134,6 +134,24 @@ class aeSecureFct {
       return $fsize;
 	  
    } // function ShowFriendlySize()
+   
+   public static function GetType($extension) {
+      
+      if (in_array($extension, array('bmp','gif','ico','icon','jpg','jpeg','png','psd','svg','tiff','webp'))) {
+         return 'images';
+      } else if (in_array($extension, array('7z','cab','gz','gzip','jpa','lzh','rar','zip'))) {
+         return 'archives';
+      } else if (in_array($extension, array('bak','log','tmp'))) {
+         return 'temporary files';
+      } else if (in_array($extension, array('eot','oft','ttf','woff','woff2'))) {
+         return 'web fonts';
+      } else if (in_array($extension, array('asf','avi','flv','mov','mp3','mp4','wmv'))) {
+         return 'video';
+      } else {
+         return '';
+      }
+      
+   } // function GetType()
 
 } // class aeSecureFct
 	
@@ -200,13 +218,14 @@ class aeSecureFolderSize {
       // ---------------------------------------------------------------------
    
       $sReturn.='<h3>By extensions</h3><table id="tblExtensions" class="table tablesorter table-hover table-bordered table-striped">'.
-         '<thead><tr><td>Files\'s eExtension</td><td>Size (human)</td><td>Site (bytes)</td></tr></thead>'.
+         '<thead><tr><td>#</td><td>Files\'s Extension</td><td>Size (human)</td><td>Site (bytes)</td><td>Type</td></tr></thead>'.
          '<tbody>';
    
       $totsize=0;
       ksort($arr);
       foreach ($arr as $key=>$size) {
-         $sReturn.='<tr><td>'.$key.'</td><td>'.aeSecureFct::ShowFriendlySize($size).'</td><td>'.$size.'</td></tr>';
+         $chk='<input type="checkbox" value="'.$size.'">';
+         $sReturn.='<tr><td style="width:30px;">'.$chk.'</td><td>'.$key.'</td><td>'.aeSecureFct::ShowFriendlySize($size).'</td><td>'.$size.'</td><td>'.aeSecureFct::GetType(strtolower($key)).'</td></tr>';
          $totsize+=$size;
       }
    
@@ -239,8 +258,14 @@ class aeSecureFolderSize {
    // Get the folder
    $sFolder=aeSecureFct::getParam('folder','string','',false);
 		 
-   if ($sFolder=='') {
-      $sFolder=__DIR__;
+   if ($sFolder=='') {            
+      if(isset($_SERVER['SCRIPT_FILENAME'])) {
+         // In case of foldersize.php isn't in the current folder but is a symbolic link.
+         // The folder should be the current folder and not the folder where foldersize.php is stored
+         $sFolder=str_replace('/',DS,dirname($_SERVER['SCRIPT_FILENAME'])).DS;         
+      } else {
+         $sFolder=__DIR__;
+      }
    } else {
       $sFolder=urldecode($sFolder);
       if((substr($sFolder,-3))=='*.*') $sFolder=substr($sFolder,0,strlen($sFolder)-3);
@@ -270,14 +295,16 @@ class aeSecureFolderSize {
    
             $sURLFolder=rtrim($sURLFolder,DS);
 		 
-		    $sReturn='<div class="page-header"><h3>'.$sURLFolder.'</h3></div>'.
+            $sReturn='<div class="page-header"><h3>'.$sURLFolder.'</h3></div>'.
                '<div class="navig"><a href="#tblFolders">By folders</a> - <a href="#tblExtensions">By file\'s extensions</a><hr/></div>';
    		 
             $aeSecureFolderSize=aeSecureFolderSize::getInstance();
             $sReturn.=$aeSecureFolderSize->doIt($sFolder);
             unset($aeSecureFolderSize);
 			
-			echo $sReturn;
+            $sReturn.='<script>initSort();</script>';
+            
+            echo $sReturn;
 			
 			break;
          
@@ -310,17 +337,15 @@ class aeSecureFolderSize {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8;" />
-	  <title>aeSecure - FolderSize</title>
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	  <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.25.3/css/theme.ice.min.css" rel="stylesheet" media="screen" />
-	  <link href= "data:image/x-icon;base64,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" rel="shortcut icon" type="image/vnd.microsoft.icon"/>  
-	  
+      <title>aeSecure - FolderSize</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.25.3/css/theme.ice.min.css" rel="stylesheet" media="screen" />
+      <link href= "data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAACXZwQWcAAAAQAAAAEABcxq3DAAAHeUlEQVRIx4XO+VOTdx7A8c/z5HmSJ0CCCYiGcF9BkVOQiiA0A6hYxauyKqutHQW1u7Z1QXS8sYoDWo9WHbQV2LWOiKDWCxS1XAZUQAFRkRsxIcFw5HzyPM93/4Cdzr5/f828QV0xK9k5wXeb5nZYvSt5qFdri1msEIqbdcKYVYoI+L+Zbmy7t8UNwHJnx+c/aHjJk9z682nyhd99WpBUHDXh1PeJTGSiXP/a46zHZKBe8SGEr5bf8i1t+NFeESyfN+F2V2gO8IioBjBe2+aW0fm/ECGEEALALOwwswYA5jHH6D6ZA7FXnObkqtZSwd5hs4yjXvZDEcKEXX89gJmzvhVs8QOAMrQfXSSCYC/mjDXEVhMvCR3B1wejnbAHbhkc2WXMZibKJxbVAA9GvG7DI+gGrbPRvNQ4ajjhOmiMNew3yBVfO5mnHnEJ423ElfgZvOCgnzWRLqE9aoJVAU29qn28EiwQdLADjqOTQMMwnkhAAawEJQAcxVIx39hK9jnbwjYenDVWOXZaz/i847fyXwqi8N3Cdsqf2iUtxzbhvbiWukj30DvpGEjV9Ns6bJkAxEZZoew63KJn06W2nwAoPl6E10x0Oyrdnrh1NchgTuMmtMC5gkcSd4lLSWVcLHJCYtSJozsgBRIA5oAR1CskzH0UiTzna03RM1OCjG4S/b8DEwJVruc+ZbFi5gmlgRCYC9GQaktHUxAL4FCXiJKOANhNKAWJOwGMjTI/2W4A1t8WbwuVx9NFulrdTrtzb/O7Et81a73crrmp3G/OvTnN3WXqtPvexwn2CjoGpQD8ECwFHo+3cWspGeUN0Q5nZldE4gAT0j773ngANlTiKd0CgNImlk6sA+B9hSkxMQDmbWwwfgDAXET94h4ArMCy06IEmMhH+TAe0Hz4156zWpeFw2dZUyCjLS1RVY3zxpbW+ZLd5B3yC1Ui4VDy5enPpgK8KC9ZUCNjivyfCzBWCdEmqAuqZQH4GyiCCgEQlI+GjZoBzHbcN+wGAGY3U8S8B0Q+epH0Ig3m8I2iOyLKclMQQdfSR2xpuiac5UmbQ1600du5wr9XpeUviF/+m2BQYZIfEq9ILkEL8c1YfOMcwgXPnv97dJhjfJFTt+j03CXn13hLnB+0TpW0aLu0N6RnuOVcHKc1GdgMLAh7Othofc65c/UjgzwB/2e+3OJM+pA1pHT8KcqEOcwrh1+YXF4l1qXFqFKth+4/xVnuVXSGqVox5Hrf1mjWH931+rLeF7WcqI4ZDvUOmv1hMS7O4veT5V/3dMRYlSx9r9opmDaaW5M82QI0yaUfr8NyyRPE23ed3IDgARmJx9ml2tc7tHtJqDbKkYqMe8hbC3JQr6rGvqKN7P51+RjJ7uHE22/3/6YJ1JgKIzI/08f2/UOWP6AjLlPXW++ml+qWMlb0e7D6z972W5ZjBK+NtwdfOEvBaPB8XkpxxutC6wOrt1+z5Jn0oiglR08uc9I418u6x9NtK+hnALxo0EIerCeruMfcSwAm21hsvAyAV6v3fvwChqTZkjKpAYCqEh4Tdky5TlcObZocv4O9PTp9gThFnSzItrpZ5YvOtU8+qWsYL5bj2HtsDRYoFHmGT+aM7jaFkot8JL4nM0a09dhqIGTdb4qbcNUhgB7R/dy7DwF6N9Qfr2UBuk41HWg0AxhC8Td4FYDwnahFFAbA43gdPB2A5xb3DI/MK/e6fkg+8GXRcAC5At+NoREx5onVY+0uRTJNxNSQcOEKgvgJYmACHVz+PauYdFx5xDKgFWtVlq2mpNH20V30czTAJbGFfE/H1pmHgxCAg8Kv1D8BwGI/0j5yFgDfyr3iegEEQQJvSgsA32HfYm8BDBeMCYYrqSbvVa/21937sw+FyE+GPeZ/jtQoHFrxq1w1Z0L+yI+XWxN1KRJtto/3EWdSD9wu4UZmOsO+2S684aP2+SNablfuu8t/iH+AQi450/YBWDU6lVYJQDuPGcYcAcRa0SuHcgDxZSaHDQDA/TAGowBMF0zbzUXuKbp6/T9Hs0Mr2uIIvf1evU27HjVhGqxzIOLpsnvdf2QQXWnmzdZfHt3tWwzTiSH3vEUd6k19g7UB0olpntNd1j0cr+hUdQb7gDG/d0OPEgDN4Aa5AgD7jZ6kVz2IRHG+Tn4G9Ti+0VyqwYceoUasHWsZVWJboRhlv2FtV4mV/JzUQpSH8riedDt6IesCB45M+vfP7186CwC/2DD8Wr/yQsGVIj1uyZI8aRq0rQK7vCX6s83xz0uHVjk9C58REaVqEJ6RnZeFAPAZSY60H0B6Pfx4+LW2SnhKGamRZY947dY8a6/yFG4CgMbv1zrFTfGQZAgTPs32tAR4yWW6LZBHLB4RGfusWXR55SGbgy2TXg3A897m93Fm29hNW5mthlltjB2bJD9QH9e8Jg5TV4UjN7rm5wbZB+z4MdfhQ0hQ6C1purg2oF2RbJonLHMQiH79VxkZpRgIVNd9I7ox1DGwj9lonsHM4OoOR9ZWmYZs7zefKmz5dMgc2u2qU1s20Uu2RdtV8Kfzn/Ul/S2fzJpMB/gvTGJ+Ljto3eoAAABZelRYdFNvZnR3YXJlAAB42vPMTUxP9U1Mz0zOVjDTM9KzUDAw1Tcw1zc0Ugg0NFNIy8xJtdIvLS7SL85ILErV90Qo1zXTM9Kz0E/JT9bPzEtJrdDLKMnNAQCtThisdBUuawAAACF6VFh0VGh1bWI6OkRvY3VtZW50OjpQYWdlcwAAeNozBAAAMgAyDBLihAAAACF6VFh0VGh1bWI6OkltYWdlOjpoZWlnaHQAAHjaMzQ3BQABOQCe2kFN5gAAACB6VFh0VGh1bWI6OkltYWdlOjpXaWR0aAAAeNozNDECAAEwAJjOM9CLAAAAInpUWHRUaHVtYjo6TWltZXR5cGUAAHjay8xNTE/VL8hLBwARewN4XzlH4gAAACB6VFh0VGh1bWI6Ok1UaW1lAAB42jM0trQ0MTW1sDADAAt5AhucJezWAAAAGXpUWHRUaHVtYjo6U2l6ZQAAeNoztMhOAgACqAE33ps9oAAAABx6VFh0VGh1bWI6OlVSSQAAeNpLy8xJtdLX1wcADJoCaJRAUaoAAAAASUVORK5CYII=" rel="shortcut icon" type="image/vnd.microsoft.icon"/>  
       <style>
          .folder{text-decoration:underline;cursor:pointer;}
          #totalsize{font-size:1.2em;}
          #reportedsize{font-weight:normal;}
       </style>
-	  
    </head>
    
    <body>
@@ -341,81 +366,112 @@ class aeSecureFolderSize {
       <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
       <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.25.3/js/jquery.tablesorter.combined.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.3.8/packaged/jquery.noty.packaged.min.js"></script>
 	  
       <script type="text/javascript">
-           
-	     $("#tblFolders").tablesorter({
-            theme: "ice",
-            widthFixed: false,
-            sortMultiSortKey: "shiftKey",
-            sortResetKey: "ctrlKey",
-            headers: {
-               0: {sorter: "text"},                 // Folder name
-               1: {sorter: "digit"},                // Folder size in Ko, MB, ...
-               2: {sorter: "digit"}                 // Folder size in integer
-            },
-            ignoreCase: true,
-            headerTemplate: "{content} {icon}",
-            widgets: ["uitheme", "filter"],
-            initWidgets: true,
-            widgetOptions: {
-               uitheme: "ice"
-            },               
-            sortList: [[0]]  // Sort by default on the folder name
-         });
-	  
-	     $("#tblExtensions").tablesorter({
-            theme: "ice",
-            widthFixed: false,
-            sortMultiSortKey: "shiftKey",
-            sortResetKey: "ctrlKey",
-            headers: {
-               0: {sorter: "text"},                 // Extensions
-               1: {sorter: "digit"},                // Folder size in Ko, MB, ...
-               2: {sorter: "digit"}                 // Folder size in integer
-            },
-            ignoreCase: true,
-            headerTemplate: "{content} {icon}",
-            widgets: ["uitheme", "filter"],
-            initWidgets: true,
-            widgetOptions: {
-               uitheme: "ice"
-            },               
-            sortList: [[0]]  // Sort by default on the folder name
-         });
-		 
-	     $('#btnDoIt').click(function(e)  { 
+
+         function formatBytes(bytes) {
+            if(bytes < 1024) return bytes + " Bytes";
+            else if(bytes < 1048576) return(bytes / 1024).toFixed(2) + " KB";
+            else if(bytes < 1073741824) return(bytes / 1048576).toFixed(2) + " MB";
+            else return(bytes / 1073741824).toFixed(2) + " GB";
+         };
+
+         function initSort() {
+
+            $("#tblFolders").tablesorter({
+               theme: "ice",
+               widthFixed: false,
+               sortMultiSortKey: "shiftKey",
+               sortResetKey: "ctrlKey",
+               headers: {
+                  0: {sorter: "text"},                 // Folder name
+                  1: {sorter: "digit"},                // Folder size in Ko, MB, ...
+                  2: {sorter: "digit"}                 // Folder size in integer
+               },
+               ignoreCase: true,
+               headerTemplate: "{content} {icon}",
+               widgets: ["uitheme", "filter"],
+               initWidgets: true,
+               widgetOptions: {
+                  uitheme: "ice"
+               },               
+               sortList: [[2,1]]  // Sort by default on the folder size, descending
+            }); // $("#tblFolders")
+
+            $("#tblExtensions").tablesorter({
+               theme: "ice",
+               widthFixed: false,
+               sortMultiSortKey: "shiftKey",
+               sortResetKey: "ctrlKey",
+               headers: {
+                  0: {sorter: false, filter:false},    // checkbox
+                  1: {sorter: "text"},                 // Extensions
+                  2: {sorter: "digit"},                // Total size in Ko, MB, ...
+                  3: {sorter: "digit"},                // Total size in integer
+                  4: {sorter: "text"}                  // Type
+               },
+               ignoreCase: true,
+               headerTemplate: "{content} {icon}",
+               widgets: ["uitheme", "filter"],
+               initWidgets: true,
+               widgetOptions: {
+                  uitheme: "ice"
+               },               
+               sortList: [[3,1]]  // Sort by default on the total size size, descending
+            }); // $("#tblExtensions")
+
+            $ExtensionsSize=0;
+            $('#tblExtensions input[type=checkbox]').click(function () {
+               if (this.checked) {
+                  $ExtensionsSize += parseInt($(this).val());
+               } else {
+                  $ExtensionsSize -= parseInt($(this).val());
+               }
+               var n = noty({
+                  text: 'Total size for the selection : '+formatBytes($ExtensionsSize),
+                  theme: 'relax',
+                  timeout: 2400,
+                  layout: 'bottomRight',
+                  type: 'success'
+               }); // noty() 
+            });
+
+
+         } // function initSort()
+
+         $('#btnDoIt').click(function(e)  { 
 
             e.stopImmediatePropagation(); 
-			
-			var $data = new Object;
+
+            var $data = new Object;
             $data.task = "doIt"
             $data.folder = $("#folder").val();
-		
+
             $.ajax({
-				
+
                beforeSend: function() {
                   $('#Result').html('<div><span class="ajax_loading">&nbsp;</span><span style="font-style:italic;font-size:1.5em;">Un peu de patience svp...</span></div>');
                   $('#btnDoIt').prop("disabled", true);  
-				  $('#btnKillMe').prop("disabled", true);           
+                  $('#btnKillMe').prop("disabled", true);           
                },// beforeSend()               
-			   async:true,
+               async:true,
                type:"POST",
                url: "<?php echo basename(__FILE__); ?>",
                data:$data,
                datatype:"html",
                success: function (data) { 			   
                   $('#btnDoIt').prop("disabled", false);
-				  $('#btnKillMe').prop("disabled", false);  
-				  $('#Result').html(data);				  
-				  	  
+                  $('#btnKillMe').prop("disabled", false);  
+                  $('#Result').html(data);				  
+
                   $('[data-task="folder"]').click(function(){          
                      var $url=$(this).attr('data-folder');
-			         $('#folder').val($(this).attr('data-folder'));					 
-					 // And run the script again
-					 $('#btnDoIt').click();
-                  });   
-		 
+                     $('#folder').val($(this).attr('data-folder'));					 
+                     // And run the script again
+                     $('#btnDoIt').click();
+                  }); // $('[data-task="folder"]')
+
                }, // success
                error: function(Request, textStatus, errorThrown) {
                   $('#btnDoIt').prop("disabled", false);
@@ -433,15 +489,15 @@ class aeSecureFolderSize {
                   $('#Result').html($msg);
                } // error                 
             }); // $.ajax()
-         }); 
-		 
-         // Remove this script
-         $('#btnKillMe').click(function(e)  { 
+         }); // $('#btnDoIt').click()
+
+          // Remove this script
+          $('#btnKillMe').click(function(e)  { 
             e.stopImmediatePropagation(); 
-		 
-		    var $data = new Object;
+
+            var $data = new Object;
             $data.task = "killMe"
-		 
+
             $.ajax({
                beforeSend: function() {
                   $('#Result').empty();
