@@ -3,7 +3,14 @@
 /**
  * Author : AVONTURE Christophe - https://www.aesecure.com
  * 
- * Calculate the size of a website.  This script can be stored at the root level of the website 
+ * Calculate the size of a website.  This script can be stored at the root level of the website.
+ *
+ * Changelog :
+ * 
+ * 2016-12-04 
+ *    + The two tables are now sortable 
+ *    + The table with extensions provides now checkboxes and only therefore to select severall extensions and the script will display the total size of the selection
+ *    + The table with extensions has an extra column "Type" and will mention f.i. images, archives, webfonts, ... depending on the file's extension
  * 
  */
 
