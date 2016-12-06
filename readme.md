@@ -2,11 +2,19 @@
 
 In this repository, you'll find a few scripts that I've written for my own use.  Perhaps one of these scripts will be usefull for you too.
 
+## check_db ##
+
+> Quickly check if your database is up and running and obtain the list of tables (and number of records in each of them.
+
+`check_db.php` will retrieve the database's configuration from your Joomla's `configuration.php` file and will establish a connection with your server.  In case of failure, you'll obtain technical informations about the encountered error. 
+
+[go to check_db](https://github.com/cavo789/joomla_free/tree/master/check_db)
+
 ## dump_db ##
 
 > Want a very easy way to take a dump of your Joomla's database ? Don't want to enter to your admin or hosting cpanel ?  Perhaps you don't have such access (just FTP and nothing else).
 
-The dump_db script will generate an extract of your database and immediatly send it to the browser (there is no file generated on the server).
+The `dump_db.php` script will generate an extract of your database and immediatly send it to the browser (there is no file generated on the server).
 
 [go to dump_db](https://github.com/cavo789/joomla_free/tree/master/dump_db)
 
@@ -39,5 +47,14 @@ All these questions and more will find an answer with the `folder_size.php` scri
 
 [go to show_table](https://github.com/cavo789/joomla_free/tree/master/show_table)
 
+## zip ##
+
+> Take a backup of your website or any folder, quickly.
+
+By putting the `zip.php` script in any of your folder, you'll get an archive of that folder (subfolders included).  By putting the script in your website's rootfolder you'll then get a backup (of files) of your website.  No more difficult than that. 
+
+[go to show_table](https://github.com/cavo789/joomla_free/tree/master/zip)
+
 ## Credits ##
+
 Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
