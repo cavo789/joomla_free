@@ -27,3 +27,7 @@ Also note that this script will just "try" to create the archive : there is no m
 ## Credits ##
 
 Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
+
+---
+
+[Get other free scripts](https://github.com/cavo789/joomla_free)

@@ -37,3 +37,7 @@ To be clear enough : this script only remove files.  If your website used a data
 ## Credits ##
 
 Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
+
+---
+
+[Get other free scripts](https://github.com/cavo789/joomla_free)

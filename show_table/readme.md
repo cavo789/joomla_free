@@ -48,6 +48,11 @@ Creation of a data connection in Excel
 Then, in Excel, refresh the list to get the latest version of your data
 <img src="https://github.com/cavo789/joomla_free/blob/master/show_table/refresh.png" />
 
+
 ## Credits ##
 
 Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
+
+---
+
+[Get other free scripts](https://github.com/cavo789/joomla_free)

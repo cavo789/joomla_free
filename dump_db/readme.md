@@ -16,3 +16,11 @@ Don't forget to remove the script once you've finished with it.
 
 # Images 
 <img src="https://github.com/cavo789/joomla_free/blob/master/dump_db/result.png" />
+
+## Credits ##
+
+Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
+
+---
+
+[Get other free scripts](https://github.com/cavo789/joomla_free)

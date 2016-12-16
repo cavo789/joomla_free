@@ -7,8 +7,6 @@ Based on the work of Nicolas Talle (@Nicolab) [https://github.com/Nicolab/php-ft
 3. Download the `ftp_get.php` file from here to your `ftp` folder.
 4. Edit the `ftp_get.php` file and update variables with your FTP credentials.  Adjust the folder and filename to download and the local name.
 
-[Get other free scripts](https://github.com/cavo789/joomla_free)
-
 ## Credits ##
 
 Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
@@ -16,3 +14,7 @@ Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
 Thanks to
  
 * Nicollas Talle for [php-ftp-client](https://github.com/Nicolab/php-ftp-client) class
+
+---
+
+[Get other free scripts](https://github.com/cavo789/joomla_free)
