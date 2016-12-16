@@ -21,7 +21,7 @@
 
    // -------------------------------------------------------------------------------------------------- 
    //
-   // In principe, this portion of code shouldn't be changed
+   // Probably this portion of code shouldn't be changed
 
    require_once('libs/FtpClient.php');
    require_once('libs/FtpException.php');
@@ -42,9 +42,9 @@
       if ($FTP_folder!='') $ftp->chdir($FTP_folder);
       
       // Downloads a file from the FTP server and saves to an open file	  
-	  if (trim($FTP_LocalFileName)=='') $FTP_LocalFileName=$FTP_DownloadFileName;
+      if (trim($FTP_LocalFileName)=='') $FTP_LocalFileName=$FTP_DownloadFileName;
 	  
-	  $ftp->get($FTP_LocalFileName, $FTP_DownloadFileName, $FTP_Mode, 0);
+      $ftp->get($FTP_LocalFileName, $FTP_DownloadFileName, $FTP_Mode, 0);
 	  
    } else {
 	    
@@ -53,4 +53,3 @@
    } // if ($obj!=null)
 	   
    unset($ftp);
-   
