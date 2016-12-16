@@ -41,6 +41,14 @@ All these questions and more will find an answer with the `folder_size.php` scri
 
 [go to kill_folder](https://github.com/cavo789/joomla_free/tree/master/kill_folder)
 
+### log_admin ###
+
+> You've forget your admin login or admin password ?  Use `log_admin.php` and connect to your backend
+
+`log_admin.php` is a script proposed by **Yann Gomiero** on the French Joomla.fr forum.  This script is really straigt-forward and easy : put the script in the `/administrator` folder and run it.  It's done, you're connected on your administrator.   
+
+[go to log_admin](https://github.com/cavo789/joomla_free/tree/master/log_admin)
+
 ### show_table ###
 
 > Extract informations from your Joomla database and display them in a raw table; allowing to quickly connect that table into a spreadsheet program (like MS Excel)
