@@ -4,6 +4,10 @@ When you don't remember again your super admin account or even password, log_adm
 
 Don't be blocked anymore or don't play anymore with phpMyAdmin for creating a new admin / resetting the password / ..., just use this straigth-forward script
 
+## Note ##
+
+The "official" (= recommended by the Joomla project) way is either to edit the configuration.php file or to go phpMyAdmin and create a new user / reset an existing user.  More info on [https://docs.joomla.org/How_do_you_recover_or_reset_your_admin_password%3F](https://docs.joomla.org/How_do_you_recover_or_reset_your_admin_password%3F)
+
 ## BE CAREFULL !!! ##
 
 **If you've copy this script onto your website, don't forget it ! The script will be automatically deleted after the first use but ... use it ;-)  If the script stay unused, don't forget to delete it.**

@@ -8,6 +8,9 @@
  * Usefull when, f.i., a client is contacting you "I've forgot my login/pwd, how to connect back in my Joomla admin ?"
  * 
  * Credits : Yann Gomiero (see, in French, http://forum.joomla.fr/showthread.php?210994-hack%C3%A9-par&p=1073135&viewfull=1#post1073135)
+ *  
+ * Note : The "official" (= recommended by the Joomla project) way is either to edit the configuration.php file or to go phpMyAdmin and 
+ * create a new user / reset an existing user.  More info on https://docs.joomla.org/How_do_you_recover_or_reset_your_admin_password%3F
  * 
  **/
 
