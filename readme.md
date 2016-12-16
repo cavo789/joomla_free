@@ -1,8 +1,10 @@
-# Some scripts to simplify your tasks Joomla #
+# Some scripts and snippets to simplify your tasks Joomla #
 
 In this repository, you'll find a few scripts that I've written for my own use.  Perhaps one of these scripts will be usefull for you too.
 
-## check_db ##
+## Scripts ##
+
+### check_db ###
 
 > Quickly check if your database is up and running and obtain the list of tables (and number of records in each of them.
 
@@ -10,7 +12,7 @@ In this repository, you'll find a few scripts that I've written for my own use. 
 
 [go to check_db](https://github.com/cavo789/joomla_free/tree/master/check_db)
 
-## dump_db ##
+### dump_db ###
 
 > Want a very easy way to take a dump of your Joomla's database ? Don't want to enter to your admin or hosting cpanel ?  Perhaps you don't have such access (just FTP and nothing else).
 
@@ -18,7 +20,7 @@ The `dump_db.php` script will generate an extract of your database and immediatl
 
 [go to dump_db](https://github.com/cavo789/joomla_free/tree/master/dump_db)
 
-## folder_size ##
+### folder_size ###
 
 > Do you know the size of your website ?  How many megabytes/gigabytes ? 
 
@@ -31,7 +33,7 @@ All these questions and more will find an answer with the `folder_size.php` scri
 
 [go to folder_size](https://github.com/cavo789/joomla_free/tree/master/folder_size)
 
-## kill_folder ##
+### kill_folder ###
 
 > Very fast way to remove every files in a folder (subfolders included)
 
@@ -39,7 +41,7 @@ All these questions and more will find an answer with the `folder_size.php` scri
 
 [go to kill_folder](https://github.com/cavo789/joomla_free/tree/master/kill_folder)
 
-## show_table ##
+### show_table ###
 
 > Extract informations from your Joomla database and display them in a raw table; allowing to quickly connect that table into a spreadsheet program (like MS Excel)
 
@@ -47,13 +49,21 @@ All these questions and more will find an answer with the `folder_size.php` scri
 
 [go to show_table](https://github.com/cavo789/joomla_free/tree/master/show_table)
 
-## zip ##
+### zip ###
 
 > Take a backup of your website or any folder, quickly.
 
 By putting the `zip.php` script in any of your folder, you'll get an archive of that folder (subfolders included).  By putting the script in your website's rootfolder you'll then get a backup (of files) of your website.  No more difficult than that. 
 
-[go to show_table](https://github.com/cavo789/joomla_free/tree/master/zip)
+[go to zip](https://github.com/cavo789/joomla_free/tree/master/zip)
+
+## Snippets ##
+
+### ftp_get ###
+
+Small implementation of a FTP connection to retrieve and download a file from an another server.   You can use this file to, for instance, download a big file from one FTP to an another without, first, download the file on your computer.
+
+[go to ftp_get](https://github.com/cavo789/joomla_free/tree/master/ftp_get)
 
 ## Credits ##
 
