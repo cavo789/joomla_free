@@ -1,5 +1,7 @@
 # show_table #
 
+Are you French speaking ?  [Lire la description de show_table en Français](https://github.com/cavo789/joomla_free/show_table/lisezmoi.md)
+
 Sometimes you've the need to extract informations from your Joomla's database like f.i. the list of users, articles, ...
 
 Recently my need was to extract quickly the list of my customers i.e. 
