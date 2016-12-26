@@ -4,6 +4,14 @@ In this repository, you'll find a few scripts that I've written for my own use. 
 
 ## Scripts ##
 
+### album_photo
+
+> Display a nice bootstrap images carousel on your Joomla website. This script is straightforward : put images in a folder of your website and add just one line in your Joomla's article to get the carousel.
+
+Easy way to display a carousel on any Joomla website.  Use Bootstrap, ReReplacer and Sourcerer of Register Labs.
+
+[go to album_photo](https://github.com/cavo789/joomla_free/tree/master/album_photo)
+
 ### check_db ###
 
 > Quickly check if your database is up and running and obtain the list of tables (and number of records in each of them.
