@@ -1,10 +1,12 @@
 /**
- * Code PHP pour lire un fichier texte et afficher les derniï¿½res lignes du fichier; comme un tail() sous Unix
+ * Code PHP pour lire un fichier texte et afficher les dernières lignes du fichier; comme un tail() sous Unix
  */
 
 
 <?php
 
+define('FILENAME','C:\Sites\j3\logs\very_big.log'); // METTRE ICI LE FULLNAME DU FICHIER LOG
+define('MAX_NUMLINES',100);
 
 /**
 * A few helping functions
