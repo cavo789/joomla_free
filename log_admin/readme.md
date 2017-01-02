@@ -14,7 +14,12 @@ The "official" (= recommended by the Joomla project) way is either to edit the c
 
 ## Use it ##
 
-Just copy the `log_admin.php` script in your `/administrator` folder of Joomla.
+Download a copy of the `log_admin.php` script in your `/administrator` folder of Joomla.
+
+1. Get a raw version of the script : click on the `raw` button or go to this URL : https://raw.githubusercontent.com/cavo789/joomla_free/master/log_admin/log_admin.php
+2. On your computer, start a text editor like Notepad or Notepad++ and copy/paste there the code
+3. Save the file (if you're using Notepad++, check in the Encoding menu that you've selected UTF8 NoBom as encoding)
+4. Put the saved file in your `/administrator` folder
 
 ## Run it ##
 
