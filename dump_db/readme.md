@@ -6,6 +6,11 @@ Put dumb_db.php in the same folder of the Joomla's configuration.php file and ru
 ## Use it
 Just copy the dump_db.php script in the root folder of your Joomla website.  Use your FTP client to do this.
 
+1. Get a raw version of the script : click on the raw button or go to this URL : https://raw.githubusercontent.com/cavo789/joomla_free/master/dump_db/dump_db.php
+2. On your computer, start a text editor like Notepad or Notepad++ and copy/paste there the code
+3. Save the file (if you're using Notepad++, check in the Encoding menu that you've selected UTF8 NoBom as encoding)
+4. Put the saved file in your Joomla's root folder
+
 ## Run it
 Start a browser and run the file i.e go to f.i. http://site/dump_db.php.   A form will be displayed, just click on the button.
 

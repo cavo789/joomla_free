@@ -21,6 +21,10 @@ This script, `show_table.php`, allow this.
 To make this script yours : 
 
 1. Download and copy the script on your Joomla website. Put the script in the root folder of the site or in a subfolder.
+   1. Get a raw version of the script : click on the raw button or go to this URL : https://raw.githubusercontent.com/cavo789/joomla_free/master/show_table/show_table.php
+   2. On your computer, start a text editor like Notepad or Notepad++ and copy/paste there the code
+   3. Save the file (if you're using Notepad++, check in the Encoding menu that you've selected UTF8 NoBom as encoding)
+   4. Put the saved file in your Joomla's root folder (you can store the script in a subfolder but you'll then need to update the `ROOT`constant in the php code)
 2. Edit the `show_table.php` file and change the SQL : write your own. If the script has been stored in an another folder than the Joomla root folder, update the value of the constant
 3. If you wish, change the password : get a newer md5 hash.
 4. Save the file

@@ -10,6 +10,12 @@ All these questions and more will find an answer with the `folder_size.php` scri
 
 Just copy the folder_size.php script in the folder you want to analyze (the root folder f.i.).  Use your FTP client to do this.
 
+1. Get a raw version of the script : click on the raw button or go to this URL : https://raw.githubusercontent.com/cavo789/joomla_free/master/folder_size/foldersize.php
+2. On your computer, start a text editor like Notepad or Notepad++ and copy/paste there the code
+3. Save the file (if you're using Notepad++, check in the Encoding menu that you've selected UTF8 NoBom as encoding)
+4. Put the saved file in the folder of your choice
+
+
 ## Run it ##
 
 Start a browser and run the file i.e go to f.i. http://site/folder_size.php.
