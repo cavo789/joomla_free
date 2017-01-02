@@ -38,7 +38,7 @@ Bien évidemment, ce script se doit d'être protégé dès lors que les données
 
 ## Utilisation du script
 
-Téléchargez le script php depuis la page [https://github.com/cavo789/joomla_free/tree/master/show_table](https://github.com/cavo789/joomla_free/tree/master/show_table).
+Téléchargez le script php depuis la page https://raw.githubusercontent.com/cavo789/joomla_free/master/show_table/show_table.php
 
 Sauvez le fichier `show_table.php` à la racine de votre site web.  *Idéalemment travaillez uniquement en local*.
 
