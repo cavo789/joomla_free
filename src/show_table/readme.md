@@ -1,6 +1,6 @@
-# show_table #
+# show_table
 
-Are you French speaking ?  [Lire la description de show_table en Français](https://github.com/cavo789/joomla_free/blob/master/show_table/lisezmoi.md)
+Are you French speaking ?  [Lire la description de show_table en Français](https://github.com/cavo789/joomla_free/blob/master/src/show_table/lisezmoi.md)
 
 Sometimes you've the need to extract informations from your Joomla's database like f.i. the list of users, articles, ...
 
@@ -16,12 +16,12 @@ And the magic is there.
 
 This script, `show_table.php`, allow this.
 
-## Use it ##
+## Use it
 
 To make this script yours : 
 
 1. Download and copy the script on your Joomla website. Put the script in the root folder of the site or in a subfolder.
-   1. Get a raw version of the script : click on the raw button or go to this URL : https://raw.githubusercontent.com/cavo789/joomla_free/master/show_table/show_table.php
+   1. Get a raw version of the script : click on the raw button or go to this URL : https://raw.githubusercontent.com/cavo789/joomla_free/master/src/show_table/show_table.php
    2. On your computer, start a text editor like Notepad or Notepad++ and copy/paste there the code
    3. Save the file (if you're using Notepad++, check in the Encoding menu that you've selected UTF8 NoBom as encoding)
    4. Put the saved file in your Joomla's root folder (you can store the script in a subfolder but you'll then need to update the `ROOT`constant in the php code)
@@ -29,36 +29,36 @@ To make this script yours :
 3. If you wish, change the password : get a newer md5 hash.
 4. Save the file
 
-## Run it ##
+## Run it
 
 Start a browser and run the file.
 
 You'll need to provide the password. By default, it's **`Joomla`** so use an URL like this one : http://yoursite/show_table.php?password=Joomla
 
-### To get a RAW output ###
+### To get a RAW output
 
 http://yoursite/show_table.php?password=Joomla&format=RAW
 
-### To get a HTML output ###
+### To get a HTML output
 
 http://yoursite/show_table.php?password=Joomla&format=HTML
 
-## Images ##
+## Images
 
 HTML output with filtering and column sortering
-<img src="https://github.com/cavo789/joomla_free/blob/master/show_table/sample.png" />
+<img src="https://github.com/cavo789/joomla_free/blob/master/src/show_table/sample.png" />
 
 Creation of a data connection in Excel
-<img src="https://github.com/cavo789/joomla_free/blob/master/show_table/worksheet.png" />
+<img src="https://github.com/cavo789/joomla_free/blob/master/src/show_table/worksheet.png" />
 
 Then, in Excel, refresh the list to get the latest version of your data
-<img src="https://github.com/cavo789/joomla_free/blob/master/show_table/refresh.png" />
+<img src="https://github.com/cavo789/joomla_free/blob/master/src/show_table/refresh.png" />
 
 
-## Credits ##
+## Credits
 
 Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
 
----
+-----
 
 [Get other free scripts](https://github.com/cavo789/joomla_free)

@@ -9,7 +9,7 @@ Online demo : http://jugwallonie.be/compte-rendu-20160521.html (at the end of th
 ### Setup phase (to do only once)
 1. Create a new folder in your Joomla root folder (f.i. /scripts). *You can protect that folder by putting a .htaccess file in it with "deny from all" if you want.*
 2. Copy there a raw version of the `album_photo.php`script :
-   1. Clic on the `raw` button to see the script without any HTML tags or use this URL : https://raw.githubusercontent.com/cavo789/joomla_free/master/album_photo/album_photo.php
+   1. Clic on the `raw` button to see the script without any HTML tags or use this URL : https://raw.githubusercontent.com/cavo789/joomla_free/master/src/album_photo/album_photo.php
    2. On your computer, start a text editor like Notepad or Notepad++ and copy/paste there the code
    3. Save the file (if you're using Notepad++, check in the Encoding menu that you've selected UTF8 NoBom as encoding)
    4. Put the saved file in your new folder
@@ -38,7 +38,7 @@ include JPATH_SITE.'/scripts/album_photo.php';
    4. And be sure to enable the rule
 
 
-   <img src="https://github.com/cavo789/joomla_free/blob/master/album_photo/rereplacer.png" />
+   <img src="https://github.com/cavo789/joomla_free/blob/master/src/album_photo/rereplacer.png" />
 
 6. Save that rule.
 
@@ -51,20 +51,18 @@ include JPATH_SITE.'/scripts/album_photo.php';
 
 If the setup phase was correctly done, now, you should see your carousel
 
-## Run it ##
+## Run it
 
+## Remark
 
-## Remark ##
+## Images
 
+<img src="https://github.com/cavo789/joomla_free/blob/master/src/album_photo/result.png" />
 
-## Images ##
-
-<img src="https://github.com/cavo789/joomla_free/blob/master/album_photo/result.png" />
-
-## Credits ##
+## Credits
 
 Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
 
----
+-----
 
 [Get other free scripts](https://github.com/cavo789/joomla_free)

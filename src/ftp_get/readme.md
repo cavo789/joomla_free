@@ -1,4 +1,4 @@
-# Sample on how to make a FTP Get in php #
+# Sample on how to make a FTP Get in php
 
 Based on the work of Nicolas Talle (@Nicolab) [https://github.com/Nicolab/php-ftp-client](https://github.com/Nicolab/php-ftp-client)
 
@@ -12,9 +12,9 @@ Based on the work of Nicolas Talle (@Nicolab) [https://github.com/Nicolab/php-ft
 Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
 
 Thanks to
- 
+
 * Nicollas Talle for [php-ftp-client](https://github.com/Nicolab/php-ftp-client) class
 
----
+-----
 
 [Get other free scripts](https://github.com/cavo789/joomla_free)

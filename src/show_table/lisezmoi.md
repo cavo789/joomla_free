@@ -10,7 +10,7 @@ Dans ce fichier Excel, je note le pseudo de mon client, son adresse postale, son
 
 En bon informaticien toujours soucieux de réduire son travail manuel, mon besoin était donc : "**Depuis Excel, pouvoir lancer une requête vers mon site web pour en extraire la liste des utilisateurs et ainsi ne plus avoir à recopié les données déjà introduites par mes utilisateurs**".   Le script *show_table.php* est né à ce moment.
 
-<img src="https://github.com/cavo789/joomla_free/blob/master/show_table/sample.png" width="680"/>
+<img src="https://github.com/cavo789/joomla_free/blob/master/src/show_table/sample.png" width="680"/>
 
 ## show_table.php
 
@@ -38,7 +38,7 @@ Bien évidemment, ce script se doit d'être protégé dès lors que les données
 
 ## Utilisation du script
 
-Téléchargez le script php depuis la page https://raw.githubusercontent.com/cavo789/joomla_free/master/show_table/show_table.php
+Téléchargez le script php depuis la page https://raw.githubusercontent.com/cavo789/joomla_free/master/src/show_table/show_table.php
 
 Sauvez le fichier `show_table.php` à la racine de votre site web.  *Idéalemment travaillez uniquement en local*.
 
@@ -115,7 +115,7 @@ Activez une feuille de calcul vierge et cliquez sur le menu Données (*Data*).  
 
 Une nouvelle fenêtre va s'afficher et vous devrez renseigner l'adresse vers une page web.  Il faut y mentionner l'URL vers le script `show_table.php` avec, attention, deux paramètres : le mot de passe à utiliser et le format RAW, lire ci-dessous. 
 
-<img src="https://github.com/cavo789/joomla_free/blob/master/show_table/worksheet.png" width="680" />
+<img src="https://github.com/cavo789/joomla_free/blob/master/src/show_table/worksheet.png" width="680" />
 
 En Excel, l'affichage sera fera dans un tableau sans mise en forme aucune mais rien ne vous interdit ensuite de mettre en forme la ligne avec les noms des champs, d'insérer des lignes vierges au-dessus pour afficher un titre, ...
 
@@ -139,6 +139,10 @@ Ce paramètre peut contenir une des deux valeurs suivantes :
 
 Le script `show_table.php` étant libre de droit et proposé en Open Source, n'hésitez pas à ajouter vos propres paramètres pour p.ex. faire des filtres (country pour limiter l'affichage aux utilisateurs d'un pays, period pour limiter l'affichage des ventes pour un trimestre, year pour les articles écris durant une année précise, author pour les articles d'un auteur particulier, etc.)
 
-### Crédits
+## Crédits
 
 `show_table.php` est un script conçu par Christophe Avonture, développeur d'[aeSecure](https://www.aesecure.com/fr/)
+
+-----
+
+[Get other free scripts](https://github.com/cavo789/joomla_free)
