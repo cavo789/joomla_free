@@ -2,145 +2,228 @@
 
 /**
  * Author : AVONTURE Christophe - https://www.aesecure.com
- * 
- * Very straigh forward script to check if the database connection is working.
- * This script should be placed in the root folder of your Joomla website.  
- * Then just call it : http://yoursite/check_db.php
- * 
- * If your database is correctly configured in your Joomla's configuration.php file, this script will initialize
- * a connection to the database server and will get the list of all tables with, for each of them, the number of records.
- * 
- * If a connectivity problem is found, the script will display technical informations
- * 
+ *
+ * Compress a folder (subfolders included).  Copy this script in any of your FTP folder (your root folder or a subfolder) and
+ * then just call the script like f.i. http://yoursite/zip.php
+ *
+ * This script is "raw" : will try to make the ZIP file but will not work a huge website or slow hoster.  You can
+ * therefore encounters errors like, f.i., CPU timeout.
+ *
  */
 
-define('DEBUG',TRUE);
+define('DEBUG', true);
 
-if(!defined('DS')) define('DS',DIRECTORY_SEPARATOR);
+set_time_limit(0);
 
-class aeSecureFct {
-	
+if (!defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
+
+class aeSecureFct
+{
+    
    /**
     * Safely read posted variables
-    * 
+    *
     * @param type $name          f.i. "password"
     * @param type $type          f.i. "string"
     * @param type $default       f.i. "default"
     * @return type
     */
-   public static function getParam($name, $type='string', $default='', $base64=false) {
+    public static function getParam($name, $type = 'string', $default = '', $base64 = false)
+    {
       
-      $tmp='';
-      $return=$default;
+        $tmp='';
+        $return=$default;
       
-      if (isset($_POST[$name])) {
-         if (in_array($type,array('int','integer'))) {
-            $return=filter_input(INPUT_POST, $name, FILTER_SANITIZE_NUMBER_INT);
-         } elseif ($type=='boolean') {
-            // false = 5 characters
-            $tmp=substr(filter_input(INPUT_POST, $name, FILTER_SANITIZE_STRING),0,5);
-            $return=(in_array(strtolower($tmp), array('on','true')))?true:false;
-         } elseif ($type=='string') {
-            $return=filter_input(INPUT_POST, $name, FILTER_SANITIZE_STRING);    
-            if($base64===true) $return=base64_decode($return);
-         } elseif ($type=='unsafe') {
-            $return=$_POST[$name];            
-         }
-		 
-      } else { // if (isset($_POST[$name]))
-     
-         if (isset($_GET[$name])) {
-            if (in_array($type,array('int','integer'))) {
-               $return=filter_input(INPUT_GET, $name, FILTER_SANITIZE_NUMBER_INT);
+        if (isset($_POST[$name])) {
+            if (in_array($type, array('int','integer'))) {
+                $return=filter_input(INPUT_POST, $name, FILTER_SANITIZE_NUMBER_INT);
             } elseif ($type=='boolean') {
-               // false = 5 characters
-               $tmp=substr(filter_input(INPUT_GET, $name, FILTER_SANITIZE_STRING),0,5);
-               $return=(in_array(strtolower($tmp), array('on','true')))?true:false;
+                // false = 5 characters
+                $tmp=substr(filter_input(INPUT_POST, $name, FILTER_SANITIZE_STRING), 0, 5);
+                $return=(in_array(strtolower($tmp), array('on','true')))?true:false;
             } elseif ($type=='string') {
-               $return=filter_input(INPUT_GET, $name, FILTER_SANITIZE_STRING);    
-               if($base64===true) $return=base64_decode($return);                 
+                $return=filter_input(INPUT_POST, $name, FILTER_SANITIZE_STRING);
+                if ($base64===true) {
+                    $return=base64_decode($return);
+                }
             } elseif ($type=='unsafe') {
-               $return=$_GET[$name];            
+                $return=$_POST[$name];
             }
-         } // if (isset($_GET[$name])) 
-				
-      } // if (isset($_POST[$name]))
+        } else { // if (isset($_POST[$name]))
+     
+            if (isset($_GET[$name])) {
+                if (in_array($type, array('int','integer'))) {
+                    $return=filter_input(INPUT_GET, $name, FILTER_SANITIZE_NUMBER_INT);
+                } elseif ($type=='boolean') {
+                    // false = 5 characters
+                    $tmp=substr(filter_input(INPUT_GET, $name, FILTER_SANITIZE_STRING), 0, 5);
+                    $return=(in_array(strtolower($tmp), array('on','true')))?true:false;
+                } elseif ($type=='string') {
+                    $return=filter_input(INPUT_GET, $name, FILTER_SANITIZE_STRING);
+                    if ($base64===true) {
+                        $return=base64_decode($return);
+                    }
+                } elseif ($type=='unsafe') {
+                    $return=$_GET[$name];
+                }
+            } // if (isset($_GET[$name]))
+        } // if (isset($_POST[$name]))
       
-      if ($type=='boolean') $return=(in_array($return, array('on','1'))?true:false);
+        if ($type=='boolean') {
+            $return=(in_array($return, array('on','1'))?true:false);
+        }
       
-      return $return;	   
-	  
-   } // function getParam()
-
+        return $return;
+    } // function getParam()
 } // class aeSecureFct
 
-   if (DEBUG===TRUE) {
-      ini_set("display_errors", "1");
-      ini_set("display_startup_errors", "1");
-      ini_set("html_errors", "1");
-      ini_set("docref_root", "http://www.php.net/");
-      ini_set("error_prepend_string", "<div style='color:red; font-family:verdana; border:1px solid red; padding:5px;'>");
-      ini_set("error_append_string", "</div>");
-      error_reporting(E_ALL);
-   } else {	   
-      ini_set('error_reporting', E_ALL & ~ E_NOTICE);	  
-   }
-
-   $task=aeSecureFct::getParam('task','string','',false);
+class aeSecureFiles
+{
    
-   if ($task==='doIt') {
+    public static function get_files($folder, $include_subs = false)
+    {
+
+        // Remove any trailing slash
+        if (substr($folder, -1) == '/') {
+            $folder = substr($folder, 0, -1);
+        }
+
+        // Make sure a valid folder was passed
+        if (!file_exists($folder) || !is_dir($folder) || !is_readable($folder)) {
+            echo '<p class="text-danger">Incorrect folder : '.$folder.'</p>';
+            return false;
+            die();
+        }
+
+        // Grab a file handle
+        $all_files = false;
       
-      $sReturn = '';
+        if ($handle = opendir($folder)) {
+            $all_files = array();
+         
+            // Start looping through a folder contents
+            while ($file = @readdir($handle)) {
+                // Set the full path
+                $path = $folder.'/'.$file;
+
+                // Filter out this and parent folder
+                if ($file != '.' && $file != '..') {
+                    // Test for a file or a folder
+                    if (is_file($path)) {
+                        $all_files[] = $path;
+                    } elseif ((is_dir($path) && $include_subs) && (($file!='backups') && ($file!='cache'))) {
+                        // Get the subfolder files
+                        $subfolder_files = self::get_files($path, true);
+
+                        // Anything returned
+                        if ($subfolder_files) {
+                            $all_files = array_merge($all_files, $subfolder_files);
+                        }
+                    }
+                }
+            } // while ($file = @readdir ($handle))
+            //
+            // Cleanup
+            closedir($handle);
+        } // if($handle = opendir($folder))
+      
+        // Return the file array
+        @sort($all_files);
+        return $all_files;
+    } // function get_files
    
-      require_once('configuration.php'); 
-      $JConfig = new JConfig();          
-
-      $sReturn.='<h2>Database credentials</h2><em>Found in your configuration.php file.</em><ul><li>Host : '.$JConfig->host.'</li>'.
-         '<li>Type : '.$JConfig->dbtype.'</li>'.
-         '<li>Database : '.$JConfig->db.'</li>'.
-         '<li>Username : '.$JConfig->user.'</li><li>Password : '.$JConfig->password.'</li>'.
-         '<li>Prefix : '.$JConfig->dbprefix.'</li></ul>';		 
-
-      mysqli_report(MYSQLI_REPORT_STRICT);
-
-      $mysqli = new mysqli($JConfig->host, $JConfig->user, $JConfig->password); 
-
-      if (mysqli_connect_errno()===0) {
-
-         $sReturn.='<h2>MySQL version : '.$mysqli->server_info.'</h2>';  
-
-         $sSQL="SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA LIKE '".$JConfig->db."' ORDER BY TABLE_NAME;";
-
-         $sReturn.='<h2>List of tables found in your database</h2><pre lang="sql">'.$sSQL.'</pre>';
-
-         if ($tables = $mysqli->query($sSQL)) {
-            $sReturn.='<table id="tbl" class="table tablesorter table-hover table-bordered table-striped"><thead><td>TableName</td><td># rows</td></thead><tbody>';
-            while ($row = mysqli_fetch_array($tables)){
-               $sReturn.='<tr><td>'.$row['TABLE_NAME'].'</td><td>'.$row['TABLE_ROWS'].'</td></tr>';
-            }
-            $sReturn.='</tbody></table>';
-         }
-
-         unset($row);
-         unset($tables);   
-
-      } else { // if (mysqli_connect_errno()===0)
-
-         $sReturn.='<p class="bg-danger">Could not connect to mysql.</p>';
-         $sReturn.='<h2>MySQL object</h2><pre>'.print_r($mysqli,true).'</pre>';
-
-      } // if (mysqli_connect_errno()===0)
-
-      $mysqli->close();
-      
-      $sReturn.='<script>initSort();</script>';
-      
-      echo $sReturn;
-      die();
-   
-   } // if ($task==='doIt')
+   /* creates a compressed zip file */
+    public static function create_zip($files = array(), $destination = '', $overwrite = false)
+    {
             
-?> 
+        $sReturn='';
+      
+        //if the zip file already exists and overwrite is false, return false
+        if (file_exists($destination) && !$overwrite) {
+            return '<p class="text-danger">File '.$destination.' already exists.</p>';
+        }
+      
+        $valid_files = array();
+      
+        // Be sure files are well there
+        if (is_array($files)) {
+            foreach ($files as $file) {
+                if (file_exists($file)) {
+                    $valid_files[] = $file;
+                }
+            }
+        } // if(is_array($files))
+      
+        if (count($valid_files)) {
+            //create the archive
+            $zip = new ZipArchive();
+            if ($zip->open($destination, $overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
+                return '<p class="text-danger">Problem occured by trying to create '.$destination.'.</p>';
+            }
+         
+            //add each files to the archive
+            foreach ($valid_files as $file) {
+                $zip->addFile($file, $file);
+            }
+         
+            if (file_exists($destination)) {
+                $sReturn.='<h3>'.$destination.' has been created</h3>';
+                if (DEBUG===true) {
+                    $sReturn.='<p class="text-info">The zip archive contains '.$zip->numFiles.' files</p>';
+                }
+            } else {
+                $sReturn.='<p class="text-danger">File is missing : '.$destination.'.</p>';
+            }
+
+            $zip->close();
+
+            return $sReturn;
+        } else { // if(count($valid_files))
+         
+            return '<p class="text-danger">There is nothing to archive.</p>';
+        } // if(count($valid_files))
+    } // function create_zip
+} // class aeSecureFiles
+
+if (DEBUG===true) {
+    ini_set("display_errors", "1");
+    ini_set("display_startup_errors", "1");
+    ini_set("html_errors", "1");
+    ini_set("docref_root", "http://www.php.net/");
+    ini_set("error_prepend_string", "<div style='color:red; font-family:verdana; border:1px solid red; padding:5px;'>");
+    ini_set("error_append_string", "</div>");
+    error_reporting(E_ALL);
+} else {
+    ini_set('error_reporting', E_ALL & ~ E_NOTICE);
+}
+   
+$task=aeSecureFct::getParam('task', 'string', '', false);
+   
+if ($task==='doIt') {
+    $abs_path=$_SERVER['SCRIPT_FILENAME']; //get absolute path of this file
+    $dir=dirname($abs_path);
+    $files=aeSecureFiles::get_files($dir, true);
+    $files_str=CHR(10);
+    $files2zip=array();
+      
+    for ($i=0; $i<count($files); $i++) {
+        if ($files[$i]!=$abs_path && basename($files[$i])!='Thumbs.db' && basename($files[$i])!=basename($dir).'.zip') {
+            $files2zip[]=str_replace($dir."/", "", $files[$i]);
+        }
+    } // for
+      
+    $result = aeSecureFiles::create_zip($files2zip, basename($dir).'.zip', true);
+      
+    echo $result;
+      
+    echo '<h2>Files compressed</h2><pre>'.print_r($files2zip, true).'</pre>';
+    die();
+      
+} // if ($task==='doIt')
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -152,7 +235,7 @@ class aeSecureFct {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8;" />
-      <title>aeSecure - Check DB connection</title>
+      <title>aeSecure - Make zip</title>
       <link href= "data:image/x-icon;base64,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" rel="shortcut icon" type="image/vnd.microsoft.icon"/>  
       <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
       <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.25.3/css/theme.ice.min.css" rel="stylesheet" media="screen" />
@@ -169,7 +252,7 @@ class aeSecureFct {
    
    <body>
       <div class="container">
-         <div class="page-header"><h1>aeSecure - Check database connection</h1></div>
+         <div class="page-header"><h1>aeSecure - Make archive of <?php echo __DIR__;?></h1></div>
          <div id="Result">&nbsp;</div>
       </div>
       <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -196,28 +279,6 @@ class aeSecureFct {
             }); // $.ajax() 
          }); // $( document ).ready()
          
-         function initSort() {
-         
-            $("#tbl").tablesorter({
-                theme: "ice",
-                widthFixed: false,
-                sortMultiSortKey: "shiftKey",
-                sortResetKey: "ctrlKey",
-                headers: {
-                   0: {sorter: "text"},                // Table name
-                   1: {sorter: "digit"}                // Number of records
-                },
-                ignoreCase: true,
-                headerTemplate: "{content} {icon}",
-                widgets: ["uitheme", "filter"],
-                initWidgets: true,
-                widgetOptions: {
-                   uitheme: "ice"
-                },               
-                sortList: [[0]]  // Sort by default on the table name
-             });
-          } // function initSort()
-            
       </script>
       
    </body>

@@ -2,322 +2,322 @@
 
 /**
  * Author : AVONTURE Christophe - https://www.aesecure.com
- * 
+ *
  * Calculate the size of a website.  This script can be stored at the root level of the website.
  *
  * Changelog :
- * 
- * 2016-12-04 
- *    + The two tables are now sortable 
+ *
+ * 2016-12-04
+ *    + The two tables are now sortable
  *    + The table with extensions provides now checkboxes and only therefore to select severall extensions and the script will display the total size of the selection
  *    + The table with extensions has an extra column "Type" and will mention f.i. images, archives, webfonts, ... depending on the file's extension
- * 
+ *
  */
 
-define('DEBUG',FALSE);
+define('DEBUG', false);
 
-if(!defined('DS')) define('DS',DIRECTORY_SEPARATOR);
+if (!defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
 
-define('MB',1024*1024);            // One megabyte
-define('BIG_FILES',2*MB);          // A big file has a size of ... MB at least
+define('MB', 1024*1024);            // One megabyte
+define('BIG_FILES', 2*MB);          // A big file has a size of ... MB at least
 
-class aeSecureFct {
-	
+class aeSecureFct
+{
+    
    /**
     * Safely read posted variables
-    * 
+    *
     * @param type $name          f.i. "password"
     * @param type $type          f.i. "string"
     * @param type $default       f.i. "default"
     * @return type
     */
-   public static function getParam($name, $type='string', $default='', $base64=false) {
+    public static function getParam($name, $type = 'string', $default = '', $base64 = false)
+    {
       
-      $tmp='';
-      $return=$default;
+        $tmp='';
+        $return=$default;
       
-      if (isset($_POST[$name])) {
-         if (in_array($type,array('int','integer'))) {
-            $return=filter_input(INPUT_POST, $name, FILTER_SANITIZE_NUMBER_INT);
-         } elseif ($type=='boolean') {
-            // false = 5 characters
-            $tmp=substr(filter_input(INPUT_POST, $name, FILTER_SANITIZE_STRING),0,5);
-            $return=(in_array(strtolower($tmp), array('on','true')))?true:false;
-         } elseif ($type=='string') {
-            $return=filter_input(INPUT_POST, $name, FILTER_SANITIZE_STRING);    
-            if($base64===true) $return=base64_decode($return);
-         } elseif ($type=='unsafe') {
-            $return=$_POST[$name];            
-         }
-		 
-      } else { // if (isset($_POST[$name]))
-     
-         if (isset($_GET[$name])) {
-            if (in_array($type,array('int','integer'))) {
-               $return=filter_input(INPUT_GET, $name, FILTER_SANITIZE_NUMBER_INT);
+        if (isset($_POST[$name])) {
+            if (in_array($type, array('int','integer'))) {
+                $return=filter_input(INPUT_POST, $name, FILTER_SANITIZE_NUMBER_INT);
             } elseif ($type=='boolean') {
-               // false = 5 characters
-               $tmp=substr(filter_input(INPUT_GET, $name, FILTER_SANITIZE_STRING),0,5);
-               $return=(in_array(strtolower($tmp), array('on','true')))?true:false;
+                // false = 5 characters
+                $tmp=substr(filter_input(INPUT_POST, $name, FILTER_SANITIZE_STRING), 0, 5);
+                $return=(in_array(strtolower($tmp), array('on','true')))?true:false;
             } elseif ($type=='string') {
-               $return=filter_input(INPUT_GET, $name, FILTER_SANITIZE_STRING);    
-               if($base64===true) $return=base64_decode($return);                 
+                $return=filter_input(INPUT_POST, $name, FILTER_SANITIZE_STRING);
+                if ($base64===true) {
+                    $return=base64_decode($return);
+                }
             } elseif ($type=='unsafe') {
-               $return=$_GET[$name];            
+                $return=$_POST[$name];
             }
-         } // if (isset($_GET[$name])) 
-				
-      } // if (isset($_POST[$name]))
+        } else { // if (isset($_POST[$name]))
+     
+            if (isset($_GET[$name])) {
+                if (in_array($type, array('int','integer'))) {
+                    $return=filter_input(INPUT_GET, $name, FILTER_SANITIZE_NUMBER_INT);
+                } elseif ($type=='boolean') {
+                    // false = 5 characters
+                    $tmp=substr(filter_input(INPUT_GET, $name, FILTER_SANITIZE_STRING), 0, 5);
+                    $return=(in_array(strtolower($tmp), array('on','true')))?true:false;
+                } elseif ($type=='string') {
+                    $return=filter_input(INPUT_GET, $name, FILTER_SANITIZE_STRING);
+                    if ($base64===true) {
+                        $return=base64_decode($return);
+                    }
+                } elseif ($type=='unsafe') {
+                    $return=$_GET[$name];
+                }
+            } // if (isset($_GET[$name]))
+        } // if (isset($_POST[$name]))
       
-      if ($type=='boolean') $return=(in_array($return, array('on','1'))?true:false);
+        if ($type=='boolean') {
+            $return=(in_array($return, array('on','1'))?true:false);
+        }
       
-      return $return;	   
-	  
-   } // function getParam()
+        return $return;
+    } // function getParam()
 
-   public static function get_dir_size($directory, $recursive=true, &$arrSizeByExtension=array(), &$arrMD5=array()) {
+    public static function get_dir_size($directory, $recursive = true, &$arrSizeByExtension = array(), &$arrMD5 = array())
+    {
       
-      $FullSize = 0;          // Total size; included f.i. the big files
-      $ReportedSize = 0;    // Size of small files (i.e. excluded big files (see constant BIG_FILES))
+        $FullSize = 0;          // Total size; included f.i. the big files
+        $ReportedSize = 0;    // Size of small files (i.e. excluded big files (see constant BIG_FILES))
       
-      foreach (glob(rtrim($directory, DS).DS.'*', GLOB_NOSORT) as $filename) {
+        foreach (glob(rtrim($directory, DS).DS.'*', GLOB_NOSORT) as $filename) {
+            if (is_file($filename)) {
+                // It's a file
+             
+                $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+                if (!isset($arrSizeByExtension[$ext])) {
+                    $arrSizeByExtension[$ext]=0;
+                }
+                $FullSize += filesize($filename);
             
-         if(is_file($filename)) {
-			 
-			 // It's a file
-			 
-            $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            if(!isset($arrSizeByExtension[$ext])) $arrSizeByExtension[$ext]=0;
-            $FullSize += filesize($filename);
-			
-			// $arrMD5 contains the list of unique file based on their content.  If the file is unique, add one entry in the file
-			if(!isset($arrMD5[md5_file($filename)])) $arrMD5[md5_file($filename)]=filesize($filename);
-			
-			if(filesize($filename)<BIG_FILES) $ReportedSize+=filesize($filename);
-			
-            $arrSizeByExtension[$ext]+=filesize($filename);
-			
-         } else { // if(is_file($filename))
-		 
-		    // It's a folder
-			 
-            if ($recursive) {
-				list($full, $reported, $arrMD5)=aeSecureFct::get_dir_size($filename, $recursive, $arrSizeByExtension, $arrMD5);
-				$FullSize+=$full;
-				$ReportedSize+=$reported;
-			} // if ($recursive)
-			
-         } // if(is_file($filename))
-			 
-      }  // foreach
-	  
-      return array($FullSize, $ReportedSize, $arrMD5);
-	  
-   } // function get_dir_size()
-   
-   public static function ShowFriendlySize($fsizebyte) {
-	   
-      if ($fsizebyte < 1024) {
-		  
-         $fsize = $fsizebyte." bytes";
-		 
-      } elseif (($fsizebyte >= 1024) && ($fsizebyte < 1048576)) {
-		  
-         $fsize = round(($fsizebyte/1024), 2);
-         $fsize = $fsize." KB";
-		 
-      } elseif (($fsizebyte >= 1048576) && ($fsizebyte < 1073741824)) {
-		  
-         $fsize = round(($fsizebyte/1048576), 2);
-         $fsize = $fsize." MB";
-		 
-      } elseif ($fsizebyte >= 1073741824) {
-		  
-         $fsize = round(($fsizebyte/1073741824), 2);
-         $fsize = $fsize." GB";
-		 
-      }
-	  
-      return $fsize;
-	  
-   } // function ShowFriendlySize()
-   
-   public static function GetType($extension) {
+                // $arrMD5 contains the list of unique file based on their content.  If the file is unique, add one entry in the file
+                if (!isset($arrMD5[md5_file($filename)])) {
+                    $arrMD5[md5_file($filename)]=filesize($filename);
+                }
+            
+                if (filesize($filename)<BIG_FILES) {
+                    $ReportedSize+=filesize($filename);
+                }
+            
+                $arrSizeByExtension[$ext]+=filesize($filename);
+            } else { // if(is_file($filename))
+         
+                // It's a folder
+             
+                if ($recursive) {
+                    list($full, $reported, $arrMD5)=aeSecureFct::get_dir_size($filename, $recursive, $arrSizeByExtension, $arrMD5);
+                    $FullSize+=$full;
+                    $ReportedSize+=$reported;
+                } // if ($recursive)
+            } // if(is_file($filename))
+        }  // foreach
       
-      if (in_array($extension, array('bmp','gif','ico','icon','jpg','jpeg','png','psd','svg','tiff','webp'))) {
-         return 'images';
-      } else if (in_array($extension, array('7z','cab','gz','gzip','jpa','lzh','rar','zip'))) {
-         return 'archives';
-      } else if (in_array($extension, array('bak','log','tmp'))) {
-         return 'temporary files';
-      } else if (in_array($extension, array('eot','oft','ttf','woff','woff2'))) {
-         return 'web fonts';
-      } else if (in_array($extension, array('asf','avi','flv','mov','mp3','mp4','wmv'))) {
-         return 'video';
-      } else {
-         return '';
-      }
+        return array($FullSize, $ReportedSize, $arrMD5);
+    } // function get_dir_size()
+   
+    public static function ShowFriendlySize($fsizebyte)
+    {
+       
+        if ($fsizebyte < 1024) {
+            $fsize = $fsizebyte." bytes";
+        } elseif (($fsizebyte >= 1024) && ($fsizebyte < 1048576)) {
+            $fsize = round(($fsizebyte/1024), 2);
+            $fsize = $fsize." KB";
+        } elseif (($fsizebyte >= 1048576) && ($fsizebyte < 1073741824)) {
+            $fsize = round(($fsizebyte/1048576), 2);
+            $fsize = $fsize." MB";
+        } elseif ($fsizebyte >= 1073741824) {
+            $fsize = round(($fsizebyte/1073741824), 2);
+            $fsize = $fsize." GB";
+        }
       
-   } // function GetType()
-
+        return $fsize;
+    } // function ShowFriendlySize()
+   
+    public static function GetType($extension)
+    {
+      
+        if (in_array($extension, array('bmp','gif','ico','icon','jpg','jpeg','png','psd','svg','tiff','webp'))) {
+            return 'images';
+        } else if (in_array($extension, array('7z','cab','gz','gzip','jpa','lzh','rar','zip'))) {
+            return 'archives';
+        } else if (in_array($extension, array('bak','log','tmp'))) {
+            return 'temporary files';
+        } else if (in_array($extension, array('eot','oft','ttf','woff','woff2'))) {
+            return 'web fonts';
+        } else if (in_array($extension, array('asf','avi','flv','mov','mp3','mp4','wmv'))) {
+            return 'video';
+        } else {
+            return '';
+        }
+    } // function GetType()
 } // class aeSecureFct
-	
-class aeSecureFolderSize {
-	  
-   protected static $instance = null;
+    
+class aeSecureFolderSize
+{
+      
+    protected static $instance = null;
    
-   function __construct() {          
-      return true;      
-   } // function __construct()   
+    function __construct()
+    {
+        return true;
+    } // function __construct()
    
-   public static function getInstance() {
-      if (self::$instance === null) self::$instance = new aeSecureFolderSize();
-      return self::$instance;
-   }
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new aeSecureFolderSize();
+        }
+        return self::$instance;
+    }
    
-   public function DoIt($sFolder) {
-	   
-      ini_set('max_execution_time', '0');
-      ini_set('set_time_limit', '0');
+    public function DoIt($sFolder)
+    {
+       
+        ini_set('max_execution_time', '0');
+        ini_set('set_time_limit', '0');
 
-      $sReturn = '<h3>By folders</h3><table id="tblFolders" class="table tablesorter table-hover table-bordered table-striped">'.
+        $sReturn = '<h3>By folders</h3><table id="tblFolders" class="table tablesorter table-hover table-bordered table-striped">'.
          '<thead><tr><td>Folder name</td><td>Size (human)</td><td>Size (bytes)</td></tr></thead>'.
          '<tbody>';
 
-      // Get the list of subfolders (only first level)
-      $dirs = array_filter(glob($sFolder.'*'), 'is_dir');
-      array_push($dirs, $sFolder);
-      asort($dirs);
+        // Get the list of subfolders (only first level)
+        $dirs = array_filter(glob($sFolder.'*'), 'is_dir');
+        array_push($dirs, $sFolder);
+        asort($dirs);
    
-      $arr=array();
+        $arr=array();
    
-      $FullSize=0;
-      $ReportedSize=0;
-      $UniqueSize=0;
+        $FullSize=0;
+        $ReportedSize=0;
+        $UniqueSize=0;
    
-      $arrMD5=array();
+        $arrMD5=array();
    
-      foreach ($dirs as $dir) {
-	   
-         $isRootFolder=($dir===$sFolder);
-         $dir=rtrim($dir,DS).DS;
-	  
-         list($full, $report)=aeSecureFct::get_dir_size($dir, ($dir!==$sFolder), $arr, $arrMD5);
-	  
-         $FullSize+=$full;
-         $ReportedSize+=$report;
-	  
-         $sReturn.='<tr><td data-task="folder" '.($isRootFolder?'':'class="folder"').' data-folder="'.$dir.'">'.$dir.($isRootFolder?'*.*':'').'</td><td>'.aeSecureFct::ShowFriendlySize($full).'</td><td>'.$full.'</td></tr>';
-	  
-      } // foreach ($dirs as $dir)
+        foreach ($dirs as $dir) {
+            $isRootFolder=($dir===$sFolder);
+            $dir=rtrim($dir, DS).DS;
+      
+            list($full, $report)=aeSecureFct::get_dir_size($dir, ($dir!==$sFolder), $arr, $arrMD5);
+      
+            $FullSize+=$full;
+            $ReportedSize+=$report;
+      
+            $sReturn.='<tr><td data-task="folder" '.($isRootFolder?'':'class="folder"').' data-folder="'.$dir.'">'.$dir.($isRootFolder?'*.*':'').'</td><td>'.aeSecureFct::ShowFriendlySize($full).'</td><td>'.$full.'</td></tr>';
+        } // foreach ($dirs as $dir)
    
-      $sReturn.='</tbody></table><hr/>';
+        $sReturn.='</tbody></table><hr/>';
  
-      // $arrMD5 contains the list of unique file based on their content => get the total size
-      foreach ($arrMD5 as $md5=>$size) $UniqueSize+=$size;
+        // $arrMD5 contains the list of unique file based on their content => get the total size
+        foreach ($arrMD5 as $md5 => $size) {
+            $UniqueSize+=$size;
+        }
    
-      $sReturn='<p id="totalsize">The total size of '.$sFolder.' (subfolders included) is '.aeSecureFct::ShowFriendlySize($FullSize).'<br/>'.
+        $sReturn='<p id="totalsize">The total size of '.$sFolder.' (subfolders included) is '.aeSecureFct::ShowFriendlySize($FullSize).'<br/>'.
          '<span id="reportedsize">Files greater or equal to '.aeSecureFct::ShowFriendlySize(BIG_FILES).' excluded : '.aeSecureFct::ShowFriendlySize($ReportedSize).'</span>&nbsp;'.
-	     '<span id="uniquesize">Duplicate files excluded : '.aeSecureFct::ShowFriendlySize($UniqueSize).'</span></p>'.$sReturn;   
+         '<span id="uniquesize">Duplicate files excluded : '.aeSecureFct::ShowFriendlySize($UniqueSize).'</span></p>'.$sReturn;
    
-      // ---------------------------------------------------------------------
-      // Now get the size by extensions   
-      // ---------------------------------------------------------------------
+        // ---------------------------------------------------------------------
+        // Now get the size by extensions
+        // ---------------------------------------------------------------------
    
-      $sReturn.='<h3>By extensions</h3><table id="tblExtensions" class="table tablesorter table-hover table-bordered table-striped">'.
+        $sReturn.='<h3>By extensions</h3><table id="tblExtensions" class="table tablesorter table-hover table-bordered table-striped">'.
          '<thead><tr><td>#</td><td>Files\'s Extension</td><td>Size (human)</td><td>Site (bytes)</td><td>Type</td></tr></thead>'.
          '<tbody>';
    
-      $totsize=0;
-      ksort($arr);
-      foreach ($arr as $key=>$size) {
-         $chk='<input type="checkbox" value="'.$size.'">';
-         $sReturn.='<tr><td style="width:30px;">'.$chk.'</td><td>'.$key.'</td><td>'.aeSecureFct::ShowFriendlySize($size).'</td><td>'.$size.'</td><td>'.aeSecureFct::GetType(strtolower($key)).'</td></tr>';
-         $totsize+=$size;
-      }
+        $totsize=0;
+        ksort($arr);
+        foreach ($arr as $key => $size) {
+            $chk='<input type="checkbox" value="'.$size.'">';
+            $sReturn.='<tr><td style="width:30px;">'.$chk.'</td><td>'.$key.'</td><td>'.aeSecureFct::ShowFriendlySize($size).'</td><td>'.$size.'</td><td>'.aeSecureFct::GetType(strtolower($key)).'</td></tr>';
+            $totsize+=$size;
+        }
    
-      $sReturn.='</tbody></table>';
+        $sReturn.='</tbody></table>';
    
-      return $sReturn;
-	  
-   } // function DoIt()
-   
+        return $sReturn;
+    } // function DoIt()
 } // class aeSecureFolderSize
  
-   // -------------------------------------------------
-   //
-   // ENTRY POINT
-   //
-   // -------------------------------------------------
+// -------------------------------------------------
+//
+// ENTRY POINT
+//
+// -------------------------------------------------
    
-   if (DEBUG===TRUE) {
-      ini_set("display_errors", "1");
-      ini_set("display_startup_errors", "1");
-      ini_set("html_errors", "1");
-      ini_set("docref_root", "http://www.php.net/");
-      ini_set("error_prepend_string", "<div style='color:red; font-family:verdana; border:1px solid red; padding:5px;'>");
-      ini_set("error_append_string", "</div>");
-      error_reporting(E_ALL);
-   } else {	   
-      ini_set('error_reporting', E_ALL & ~ E_NOTICE);	  
-   }
+if (DEBUG===true) {
+    ini_set("display_errors", "1");
+    ini_set("display_startup_errors", "1");
+    ini_set("html_errors", "1");
+    ini_set("docref_root", "http://www.php.net/");
+    ini_set("error_prepend_string", "<div style='color:red; font-family:verdana; border:1px solid red; padding:5px;'>");
+    ini_set("error_append_string", "</div>");
+    error_reporting(E_ALL);
+} else {
+    ini_set('error_reporting', E_ALL & ~ E_NOTICE);
+}
    
-   // Get the folder
-   $sFolder=aeSecureFct::getParam('folder','string','',false);
-		 
-   if ($sFolder=='') {            
-      if(isset($_SERVER['SCRIPT_FILENAME'])) {
-         // In case of foldersize.php isn't in the current folder but is a symbolic link.
-         // The folder should be the current folder and not the folder where foldersize.php is stored
-         $sFolder=str_replace('/',DS,dirname($_SERVER['SCRIPT_FILENAME'])).DS;         
-      } else {
-         $sFolder=__DIR__;
-      }
-   } else {
-      $sFolder=urldecode($sFolder);
-      if((substr($sFolder,-3))=='*.*') $sFolder=substr($sFolder,0,strlen($sFolder)-3);
-   }   
+// Get the folder
+$sFolder=aeSecureFct::getParam('folder', 'string', '', false);
+         
+if ($sFolder=='') {
+    if (isset($_SERVER['SCRIPT_FILENAME'])) {
+        // In case of foldersize.php isn't in the current folder but is a symbolic link.
+        // The folder should be the current folder and not the folder where foldersize.php is stored
+        $sFolder=str_replace('/', DS, dirname($_SERVER['SCRIPT_FILENAME'])).DS;
+    } else {
+        $sFolder=__DIR__;
+    }
+} else {
+    $sFolder=urldecode($sFolder);
+    if ((substr($sFolder, -3))=='*.*') {
+        $sFolder=substr($sFolder, 0, strlen($sFolder)-3);
+    }
+}
    
-   $sFolder=rtrim($sFolder, DS).DS;
+$sFolder=rtrim($sFolder, DS).DS;
    
-   // Get the task
+// Get the task
       
-   $task=aeSecureFct::getParam('task','string','',false);
+$task=aeSecureFct::getParam('task', 'string', '', false);
    
-   if ($task!='') {
-	   
-      switch ($task) {
-		  
-         case 'doIt' : 
-		 
+if ($task!='') {
+    switch ($task) {
+        case 'doIt':
             // Add a click option to each part of the full folder name so the user can go up in the directory structure
    
-            $arr=explode(DIRECTORY_SEPARATOR,$sFolder);
+            $arr=explode(DIRECTORY_SEPARATOR, $sFolder);
             $sURLFolder='';
             $sSubFolder='';
             foreach ($arr as $tmp) {
-               $sSubFolder.=$tmp.DS;
-               $sURLFolder.='<span data-task="folder" data-folder="'.$sSubFolder.'" class="folder">'.$tmp.'</span>'.DS;
+                $sSubFolder.=$tmp.DS;
+                $sURLFolder.='<span data-task="folder" data-folder="'.$sSubFolder.'" class="folder">'.$tmp.'</span>'.DS;
             }
    
-            $sURLFolder=rtrim($sURLFolder,DS);
-		 
+            $sURLFolder=rtrim($sURLFolder, DS);
+         
             $sReturn='<div class="page-header"><h3>'.$sURLFolder.'</h3></div>'.
-               '<div class="navig"><a href="#tblFolders">By folders</a> - <a href="#tblExtensions">By file\'s extensions</a><hr/></div>';
-   		 
+              '<div class="navig"><a href="#tblFolders">By folders</a> - <a href="#tblExtensions">By file\'s extensions</a><hr/></div>';
+         
             $aeSecureFolderSize=aeSecureFolderSize::getInstance();
             $sReturn.=$aeSecureFolderSize->doIt($sFolder);
             unset($aeSecureFolderSize);
-			
+            
             $sReturn.='<script>initSort();</script>';
             
             echo $sReturn;
-			
-			break;
-         
-         case 'killMe' : 
-		 
             
+            break;
+         
+        case 'killMe':
             $return.='<p class="text-success">Le script '.__FILE__.' a &eacute;t&eacute; supprim&eacute; du serveur avec succ&egrave;s</p>';
             
             // Kill this script
@@ -325,13 +325,11 @@ class aeSecureFolderSize {
             
             echo $return;
             
-			break;
-			
-      } // switch
-	  
-      die();
-	   
-   } // if ($task!='')
+            break;
+    } // switch
+      
+    die();
+} // if ($task!='')
   
 ?>
 <!DOCTYPE html>
@@ -358,23 +356,23 @@ class aeSecureFolderSize {
    <body>
    
       <div class="container">
-	  
+      
          <div class="page-header"><h1>aeSecure - Folder size</h1></div>
          <div id="intro">
             <p>Cliquez sur le bouton 'Démarrer' pour scanner l'intégralité du site web afin de générer deux tableaux qui vont reprendre la taille du site web, dossiers par dossiers et par extensions.</p>
             <br/>
             <button type="button" id="btnDoIt" class="btn btn-primary">Détermine l'occupation disque du site</button>
-   		    <button type="button" id="btnKillMe" class="btn btn-danger pull-right" style="margin-left:10px;">Supprimer ce script</button>
-		    <br/>
+            <button type="button" id="btnKillMe" class="btn btn-danger pull-right" style="margin-left:10px;">Supprimer ce script</button>
+            <br/>
          </div>
-		 <input type="hidden" name="folder" id="folder" value="<?php echo $sFolder; ?>"/>
+         <input type="hidden" name="folder" id="folder" value="<?php echo $sFolder; ?>"/>
          <div id="Result">&nbsp;</div>
       </div>  
       <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
       <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.25.3/js/jquery.tablesorter.combined.min.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.3.8/packaged/jquery.noty.packaged.min.js"></script>
-	  
+      
       <script type="text/javascript">
 
          function formatBytes(bytes) {
@@ -467,14 +465,14 @@ class aeSecureFolderSize {
                url: "<?php echo basename(__FILE__); ?>",
                data:$data,
                datatype:"html",
-               success: function (data) { 			   
+               success: function (data) {              
                   $('#btnDoIt').prop("disabled", false);
                   $('#btnKillMe').prop("disabled", false);  
-                  $('#Result').html(data);				  
+                  $('#Result').html(data);                
 
                   $('[data-task="folder"]').click(function(){          
                      var $url=$(this).attr('data-folder');
-                     $('#folder').val($(this).attr('data-folder'));					 
+                     $('#folder').val($(this).attr('data-folder'));                  
                      // And run the script again
                      $('#btnDoIt').click();
                   }); // $('[data-task="folder"]')
@@ -521,7 +519,7 @@ class aeSecureFolderSize {
                   $('#Result').html(data);     
                }
             }); // $.ajax()
-         }); // $('#btnKillMe').click()		 
+         }); // $('#btnKillMe').click()      
 
       </script>
 

@@ -1,3 +1,11 @@
 debug.log
+/backups
+/dist
+/gulp
+/logs
 /nbproject/
 /nbproject/private/
+/node_modules/
+gulpfile.js
+build.bat
+post-composer.bat
