@@ -1,4 +1,6 @@
+build.bat
 debug.log
+gulpfile.js
 /backups
 /dist
 /gulp

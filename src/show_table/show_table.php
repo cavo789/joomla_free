@@ -116,7 +116,7 @@ error_reporting($error);
 require_once(JPATH_BASE.'/configuration.php');
 
 // Start the output, also for RAW output to allow the correct support of UTF8
-	  
+      
 echo '<!DOCTYPE html><html lang="en">'.
   '<head>'.
   '<meta charset="utf-8"/>'.

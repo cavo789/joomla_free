@@ -220,7 +220,6 @@ if ($task==='doIt') {
       
     echo '<h2>Files compressed</h2><pre>'.print_r($files2zip, true).'</pre>';
     die();
-      
 } // if ($task==='doIt')
 
 ?>
