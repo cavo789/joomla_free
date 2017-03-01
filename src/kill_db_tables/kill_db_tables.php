@@ -219,7 +219,7 @@ switch ($task) {
         echo '<p class="text-success">This script ('.__FILE__.') has been successfully removed from your website.</p>';
 
         // Kill this script
-//*********************        unlink(__FILE__);
+        unlink(__FILE__);
 
         die();
 		   
