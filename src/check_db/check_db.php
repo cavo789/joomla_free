@@ -180,7 +180,7 @@ if ($task==='doIt') {
          
          $(document).ready(function() {
             var $data = new Object;
-            $data.task = "doIt"
+            $data.task = "doIt";
 
             $.ajax({
                beforeSend: function() {

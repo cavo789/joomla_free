@@ -49,6 +49,14 @@ All these questions and more will find an answer with the `folder_size.php` scri
 
 [go to folder_size](https://github.com/cavo789/joomla_free/tree/master/src/folder_size)
 
+### kill_db_tables
+
+> Want a fast way to clean your database ? 
+
+`kill_db_tables.php` will display the list of tables found in your database and, thanks to a filtering, you'll define a pattern like f.i. "backup" for matching every tables with that word in their names.  Then, after confirmation, the script will remove these tables from your db.
+
+[go to kill_db_tables](https://github.com/cavo789/joomla_free/tree/master/src/kill_db_tables)
+
 ### kill_folder
 
 > Very fast way to remove every files in a folder (subfolders included)

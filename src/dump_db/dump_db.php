@@ -357,7 +357,7 @@ if ($task!='') {
             e.stopImmediatePropagation(); 
             
             var $data = new Object;
-            $data.task = "doIt"
+            $data.task = "doIt";
             
             $.ajax({
                 
@@ -406,7 +406,7 @@ if ($task!='') {
          e.stopImmediatePropagation(); 
          
          var $data = new Object;
-         $data.task = "killMe"
+         $data.task = "killMe";
          
          $.ajax({
             beforeSend: function() {
