@@ -17,7 +17,7 @@ error_reporting(E_ALL);
   * ==> Il faut placer les fichiers ZIP à la racine du site <==
   *
   */
-    
+
 define('AUTO_DELETE_ONCE_UNCOMPRESSED', true);
 
 ?>
@@ -29,12 +29,12 @@ define('AUTO_DELETE_ONCE_UNCOMPRESSED', true);
    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
-   
+
    <div class="container">
       <div class="jumbotron">
          <div class="container"><h1>aeSecure - Unzip</h1></div>
       </div>
-   
+
 <?php
 
 ini_set('max_execution_time', '0');
@@ -56,23 +56,23 @@ while (false !== ($filename = readdir($dh))) {
 if ($files!=null) {
     sort($files);
 }
-   
+
 // And, if more than one, uncompress files one by one
-   
+
 if (count($files)>0) {
     echo '<p>There are '.count($files).' to decompress...</p>';
     $i=0;
-     
+
     foreach ($files as $file) {
         $i++;
 
         $zip = new ZipArchive;
         $res = $zip->open($file);
-         
+
         if ($res === true) {
             $zip->extractTo('./');
             $zip->close();
-            
+
             echo '<h2 class="text-success">'.$i.'. '.$file.' has been extracted.</h2>';
             if (AUTO_DELETE_ONCE_UNCOMPRESSED) {
                 unlink($file);
@@ -84,10 +84,10 @@ if (count($files)>0) {
 } else { // if (count($files)>0)
     echo '<p>No zip files found in '.__DIR__.'</p>';
 } // if (count($files)>0)
-   
+
 // This file is no more needed
 unlink(__FILE__);
-       
+
 ?>
    </div>
 </body>

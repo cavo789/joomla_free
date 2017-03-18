@@ -10,7 +10,7 @@ Just copy the zip.php script in the folder you want to archive (the root folder 
 
 ## Run it
 
-Start a browser and run the file i.e go to f.i. http://site/zip.php.
+Start a browser and run the file i.e go to f.i. [http://site/zip.php](http://site/zip.php).
 
 The script will start immediatly, there is nothing to do except wait until the archive is created and output is displayed.
 

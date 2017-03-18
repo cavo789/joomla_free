@@ -16,13 +16,13 @@ En bon informaticien toujours soucieux de réduire son travail manuel, mon besoi
 
 Il s'agit d'un script `PHP` qui permet de lancer `une requête SQL` de votre choix (*=à vous de la programmer*) pour afficher au travers d'un `SELECT` les informations que vous voudriez voir apparaître sur une page.
 
-Par exemple : 
+Par exemple :
 
-* La liste de vos utilisateurs et leur appartenance aux groupes (enregistré, admininistrateur, ...),
-* la liste des articles de votre site (trié par date de rédaction) avec mention de la catégorie à laquelle ils sont rattachés et mention des tags, 
-* la liste des produits de votre site d'e-commerce avec le nombre d'articles encore en stock, 
-* la liste des photos mentionnées dans votre composant de gestion d'albums,
-* etc.
+*   La liste de vos utilisateurs et leur appartenance aux groupes (enregistré, admininistrateur, ...),
+*   la liste des articles de votre site (trié par date de rédaction) avec mention de la catégorie à laquelle ils sont rattachés et mention des tags,
+*   la liste des produits de votre site d'e-commerce avec le nombre d'articles encore en stock,
+*   la liste des photos mentionnées dans votre composant de gestion d'albums,
+*   etc.
 
 Bref : tout qui est enregistré sous forme d'une ou plusieurs tables liées dans la base de données de votre site Jooma!®.
 
@@ -38,7 +38,7 @@ Bien évidemment, ce script se doit d'être protégé dès lors que les données
 
 ## Utilisation du script
 
-Téléchargez le script php depuis la page https://raw.githubusercontent.com/cavo789/joomla_free/master/src/show_table/show_table.php
+Téléchargez le script php depuis la page [https://raw.githubusercontent.com/cavo789/joomla_free/master/src/show_table/show_table.php](https://raw.githubusercontent.com/cavo789/joomla_free/master/src/show_table/show_table.php)
 
 Sauvez le fichier `show_table.php` à la racine de votre site web.  *Idéalemment travaillez uniquement en local*.
 
@@ -46,12 +46,12 @@ Avec un éditeur de texte (du type [Notepad++](https://notepad-plus-plus.org/fr/
 
 Il y aura deux choses que vous aurez à modifier : l'instruction SQL que vous remplacerez par la vôtre (votre `SQL ... FROM ... (INNER|LEFT|RIGHT) JOIN ... WHERE`) et le mot de passe pour l'accès aux données.
 
-### Instruction SQL 
+### Instruction SQL
 
 Si vous lisez encore cet article, si je ne vous ai pas perdu, nul doute que vous saurez ce que fais ci-dessous :
 
 ```SQL
-SELECT U.id UserID, U.name Name, U.username UserName, U.email eMail, U.registerDate RegisterDate, U.lastvisitDate LastVisitDate, G.title GroupTitle 
+SELECT U.id UserID, U.name Name, U.username UserName, U.email eMail, U.registerDate RegisterDate, U.lastvisitDate LastVisitDate, G.title GroupTitle
 FROM `#__users` U
    LEFT JOIN (`#__user_usergroup_map` as UG) ON UG.user_id=U.id
    LEFT JOIN (`#__usergroups` as G) on UG.group_id=G.id
@@ -60,11 +60,11 @@ ORDER BY registerDate DESC, name, GroupTitle ASC
 
 *(affichage de la liste des utilisateurs (ID, pseudo, nom, email, ...), date de création, de dernière connexion et des groupes auxquels ils sont rattachés)*
 
-Un autre exemple : 
+Un autre exemple :
 
 ```SQL
-SELECT C.id As Article_ID, C.title As Article_Title, G.title As Category_Title, U.name As Author_Name, C.Hits As Hits, C.language As Language, C.created As Writen_Date 
-FROM `#__content` C 
+SELECT C.id As Article_ID, C.title As Article_Title, G.title As Category_Title, U.name As Author_Name, C.Hits As Hits, C.language As Language, C.created As Writen_Date
+FROM `#__content` C
    LEFT JOIN `#__categories` G ON C.catid = G.id
    LEFT JOIN `#__users` U on C.created_by=U.id
 WHERE (state=1)
@@ -73,7 +73,7 @@ ORDER BY C.created DESC
 
 *(affichage de la liste des articles, la catégorie liée, nom de l'auteur, nombre de lecture, ...)*
 
-Notez que même si nous sommes bien en dehors de Joomla!® les instructions SQL doivent respecter la norme `#_` dans le nom de la table.  Ce préfixe étant remplacé, par Joomla, par le préfixe de tables sur le site où `show_table.php` sera copié. 
+Notez que même si nous sommes bien en dehors de Joomla!® les instructions SQL doivent respecter la norme `#_` dans le nom de la table.  Ce préfixe étant remplacé, par Joomla, par le préfixe de tables sur le site où `show_table.php` sera copié.
 
 **A vous de jouer : codez votre propre instruction SQL.**  Utilisez phpMyAdmin ou tout autre outil qui vous permettra d'obtenir le résultat que vous désirez.   Une fois en possession de votre instruction, copiez-en le code SQL dans la fenêtre d'édition de show_table.php.  Cette instruction sera forcément un `SELECT ... FROM ...` avec une clause WHERE (ou pas) et un ORDER BY (ou pas).
 
@@ -87,7 +87,7 @@ Le mot de passe est défini dans le code source de `show_table.php`, cherchez la
 define('PASSWORD','57ac91865e5064f231cf620988223590');
 ```
 
-Le mot de passe, **Joomla**, est crypté en md5.  Utilisez un site internet comme p.ex. http://www.md5.cz/ pour obtenir le md5 d'un nouveau mot de passe (pour illustration le mot *show_table*, en md5, donne *1bb2132da14d711ab17d4786fcd80710*).  Copiez/coller votre hash md5 dans le fichier.
+Le mot de passe, **Joomla**, est crypté en md5.  Utilisez un site internet comme p.ex. [http://www.md5.cz/](http://www.md5.cz/) pour obtenir le md5 d'un nouveau mot de passe (pour illustration le mot *show_table*, en md5, donne *1bb2132da14d711ab17d4786fcd80710*).  Copiez/coller votre hash md5 dans le fichier.
 
 ## Utilisation
 
@@ -103,7 +103,7 @@ Une fois votre instruction SQL parachevée, le script `show_table.php` est fin p
 
 ### Au départ d'Excel
 
-*Peut-être est-ce aussi possible avec d'autres tableurs mais désolé, je n'utilise qu'Excel.* 
+*Peut-être est-ce aussi possible avec d'autres tableurs mais désolé, je n'utilise qu'Excel.*
 
 *Mise-à-jour 19/12 - Emmanuel Danan (@vistamedia) m'indique qu'il serait possible de récupérer des données externes depuis Open Office.  Lire [https://wiki.openoffice.org/wiki/Documentation/OOo3_User_Guides/Calc_Guide/Linking_to_external_data](https://wiki.openoffice.org/wiki/Documentation/OOo3_User_Guides/Calc_Guide/Linking_to_external_data)*
 
@@ -113,7 +113,7 @@ Une fois votre instruction SQL parachevée, le script `show_table.php` est fin p
 
 Activez une feuille de calcul vierge et cliquez sur le menu Données (*Data*).  Cliquez ensuite sur le bouton "Depuis le web" (*From Web*).
 
-Une nouvelle fenêtre va s'afficher et vous devrez renseigner l'adresse vers une page web.  Il faut y mentionner l'URL vers le script `show_table.php` avec, attention, deux paramètres : le mot de passe à utiliser et le format RAW, lire ci-dessous. 
+Une nouvelle fenêtre va s'afficher et vous devrez renseigner l'adresse vers une page web.  Il faut y mentionner l'URL vers le script `show_table.php` avec, attention, deux paramètres : le mot de passe à utiliser et le format RAW, lire ci-dessous.
 
 <img src="https://github.com/cavo789/joomla_free/blob/master/src/show_table/worksheet.png" width="680" />
 
@@ -133,8 +133,8 @@ Le mot de passe, **<u>en clair!</u>**, est mentionné dans l'URL.  Lorsque le pa
 
 Ce paramètre peut contenir une des deux valeurs suivantes :
 
-*  RAW : pour forcer un affichage brut des données (càd aucune mise en page, pas de Bootstrap ni de jQuery).  **Ce mode doit être utilisé si vous souhaitez récupérer vos données dans un tableur**.
-*  HTML : mode par défaut, affichage du résultat pour qu'il soit agréable depuis un navigateur.
+*   RAW : pour forcer un affichage brut des données (càd aucune mise en page, pas de Bootstrap ni de jQuery).  **Ce mode doit être utilisé si vous souhaitez récupérer vos données dans un tableur**.
+*   HTML : mode par défaut, affichage du résultat pour qu'il soit agréable depuis un navigateur.
 
 
 Le script `show_table.php` étant libre de droit et proposé en Open Source, n'hésitez pas à ajouter vos propres paramètres pour p.ex. faire des filtres (country pour limiter l'affichage aux utilisateurs d'un pays, period pour limiter l'affichage des ventes pour un trimestre, year pour les articles écris durant une année précise, author pour les articles d'un auteur particulier, etc.)

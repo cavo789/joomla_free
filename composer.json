@@ -1,28 +1,27 @@
 {
-	"name": "joomla_free",
-	"description": "Some scripts to simplify your webmaster's tasks (mainly based on the Joomla CMS) ",
-	"keywords": ["administration","ftp","joomla","maintenance","zip"],
-	"homepage": "https://github.com/cavo789/joomla_free",
-	"type": "project",
-	"license": "MIT",
-	"require": {
-	},
-	"config": {
-		"preferred-install": "dist"
-	},
-	"authors": [{
-		"name": "Christophe Avonture",
-		"email": "christophe@aesecure.com",
-		"homepage": "https://www.aesecure.com",
-		"role": "Developer"
-	}],
-	"support": {
-		"source": "https://github.com/cavo789/joomla_free",
-		"issues": "https://github.com/cavo789/joomla_free/issues",
-		"docs": "https://github.com/cavo789/joomla_free/blob/master/readme.md"
-	},
-	"require-dev": {
-		"sebastian/phpcpd": "^2.0",
-		"phpmd/phpmd": "^2.6"
-	}
+    "name": "joomla_free",
+    "description": "Some scripts to simplify your webmaster's tasks (mainly based on the Joomla CMS) ",
+    "keywords": ["administration", "ftp", "joomla", "maintenance", "zip"],
+    "homepage": "https://github.com/cavo789/joomla_free",
+    "type": "project",
+    "license": "MIT",
+    "require": {},
+    "config": {
+        "preferred-install": "dist"
+    },
+    "authors": [{
+        "name": "Christophe Avonture",
+        "email": "christophe@aesecure.com",
+        "homepage": "https://www.aesecure.com",
+        "role": "Developer"
+    }],
+    "support": {
+        "source": "https://github.com/cavo789/joomla_free",
+        "issues": "https://github.com/cavo789/joomla_free/issues",
+        "docs": "https://github.com/cavo789/joomla_free/blob/master/readme.md"
+    },
+    "require-dev": {
+        "sebastian/phpcpd": "^2.0",
+        "phpmd/phpmd": "^2.6"
+    }
 }

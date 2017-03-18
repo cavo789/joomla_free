@@ -4,23 +4,23 @@
  * Author : AVONTURE Christophe - https://www.aesecure.com
  *
  * Display the list of tables of your Joomla's website and allow you to remove tables based on part of their name.
- * 
+ *
  * This script willn't remove any table by just running it, you'll first see the list of tables then you'll
  * type a pattern (i.e. "jos" or "old_" or "_backup" or ...), see the list of concerned tables and,
  * if you confirm the deletion, only on that moment, tables will be removed.
- * 
+ *
  * So running the script is without danger ... until you confirm, manually, the deletion
  */
- 
+
 define('DEBUG', true);
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
-   
+
 class aeSecureFct
 {
-    
+
    /**
     * Safely read posted variables
     *
@@ -31,10 +31,10 @@ class aeSecureFct
     */
     public static function getParam($name, $type = 'string', $default = '', $base64 = false)
     {
-      
+
         $tmp='';
         $return=$default;
-      
+
         if (isset($_POST[$name])) {
             if (in_array($type, array('int','integer'))) {
                 $return=filter_input(INPUT_POST, $name, FILTER_SANITIZE_NUMBER_INT);
@@ -51,7 +51,7 @@ class aeSecureFct
                 $return=$_POST[$name];
             }
         } else { // if (isset($_POST[$name]))
-     
+
             if (isset($_GET[$name])) {
                 if (in_array($type, array('int','integer'))) {
                     $return=filter_input(INPUT_GET, $name, FILTER_SANITIZE_NUMBER_INT);
@@ -69,7 +69,7 @@ class aeSecureFct
                 }
             } // if (isset($_GET[$name]))
         } // if (isset($_POST[$name]))
-      
+
         return $return;
     } // function getParam()
 } // class aeSecureFct
@@ -96,48 +96,48 @@ if (isset($_SERVER['SCRIPT_FILENAME'])) {
 
 $task=aeSecureFct::getParam('task', 'string', 'init', false);
 
-if ($task!=='') 
+if ($task!=='')
 {
-    
+
     if (!file_exists($sFileName=$sFolder.'configuration.php'))
     {
         echo '<p class="text-warning error">Please put this script in the same folder of your Joomla\'s <em>configuration.php</em> file i.e. in the root folder of your website.</p>';
         die();
-        
+
     } else { // if (!file_exists($sFileName=$sFolder.'configuration.php'))
-        
+
         require_once($sFileName);
 		$JConfig = new JConfig();
-        
+
         $sReturn='<h3>Working database <em>'.$JConfig->db.'</em></h3>';
-        
+
         if (DEBUG===true) {
 			mysqli_report(MYSQLI_REPORT_STRICT);
 		}
-        
+
         $mysqli = new mysqli($JConfig->host, $JConfig->user, $JConfig->password);
-		
+
 		if (mysqli_connect_errno()!==0) {
-			
+
 			echo '<p class="bg-danger error">Could not connect to mysql.</p>';
             $mysqli->close();
 			die();
-            
+
         } else { // if (mysqli_connect_errno()!==0)
-            
+
             // Be sure to work on the correct database
             mysqli_select_db($mysqli, $JConfig->db);
-            
+
         } // if (mysqli_connect_errno()!==0)
-            
+
     } // if (!file_exists($sFileName=$sFolder.'configuration.php'))
-    
+
 } // if ($task!=='')
 
 switch ($task) {
-    
+
     case 'getList':
-            
+
         $sTableList='';
 
         // Extract the list of table names
@@ -150,47 +150,47 @@ switch ($task) {
                 $sTableList.='<tr><td>'.$row['TABLE_NAME'].'</td><td>'.$row['TABLE_ROWS'].'</td></tr>';
             }
             $sTableList.='</tbody></table>';
-        } 
+        }
 
         $mysqli->close();
-        
+
         echo $sTableList;
         die();
-            
-    case 'KillSelected' : 
-        
+
+    case 'KillSelected' :
+
         // The pattern is a part of the tablename like his prefix or suffix or ...
         $pattern=aeSecureFct::getParam('pattern', 'string', '', true);
-        
+
         // really remove the table ?  If $doIt is set to false, a confirmation will be displayed
         $doIt=aeSecureFct::getParam('doit', 'boolean', '0', false);
-       
-        if (trim($pattern)==='') 
+
+        if (trim($pattern)==='')
         {
             echo '<p class="bg-danger error">Your pattern is empty.  Exiting.</p>';
             $mysqli->close();
 			die();
         }
-        
+
         $sSQL="SELECT * FROM INFORMATION_SCHEMA.TABLES ".
            "WHERE (TABLE_SCHEMA LIKE '".$JConfig->db."') AND ".
             "(TABLE_NAME LIKE '%".$mysqli->real_escape_string($pattern)."%') ".
             "ORDER BY TABLE_NAME;";
 
-        $sTableList=($doIt!=1 
+        $sTableList=($doIt!=1
             ? '<h2 class="text-danger">You\'re about to remove these tables from your database.  Are you sure ? </h2>'
             : '<h2>These tables have been removed</h2>');
 
-        if ($tables = $mysqli->query($sSQL)) 
+        if ($tables = $mysqli->query($sSQL))
         {
-            
+
             $sTableList.='<ul class="fa-ul">';
-        
+
             while ($row = mysqli_fetch_array($tables)) {
-                
-                if ($doIt==1) 
+
+                if ($doIt==1)
                 {
-               
+
                     $sSQL = 'DROP TABLE `'.$mysqli->real_escape_string($row['TABLE_NAME']).'`;';
 
                     if ($mysqli->query($sSQL)) {
@@ -198,35 +198,35 @@ switch ($task) {
                     } else {
                         $sStatus='<i class="text-warning fa fa-exclamation-triangle" aria-hidden="true"></i>';
                     }
-                } //  if ($doIt===1) 
-                
+                } //  if ($doIt===1)
+
                 $sTableList.='<li><i class="fa-li fa fa-table"></i>'.
                     ($doIt!=1?$row['TABLE_NAME']:$sSQL.'&nbsp;'.$sStatus).
                     '</li>';
-                
+
             } // while
-            
+
             $sTableList.='</ul>';
-            
+
         } // if ($tables = $mysqli->query($sSQL))
-        
+
         $mysqli->close();
         echo $sTableList;
         die();
-           
+
     case 'killMe':
-        
+
         echo '<p class="text-success">This script ('.__FILE__.') has been successfully removed from your website.</p>';
 
         // Kill this script
         unlink(__FILE__);
 
         die();
-		   
+
 } // switch ($task)
-	   
-?> 
-		
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -238,15 +238,15 @@ switch ($task) {
       <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8;" />
       <title>aeSecure - Kill DB Prefix</title>
-      <link href= "data:image/x-icon;base64,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" rel="shortcut icon" type="image/vnd.microsoft.icon"/>  
+      <link href= "data:image/x-icon;base64,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" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
       <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
       <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.25.3/css/theme.ice.min.css" rel="stylesheet" media="screen" />
       <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" media="screen" />
-      
+
       <style>
         .error {
             margin:10px;
-            font-size:2em;   
+            font-size:2em;
         }
         .ajax_loading {
             display:inline-block;
@@ -261,19 +261,19 @@ switch ($task) {
             border:1px solid green;
         }
         .joomla ul {
-            padding-top:8px;    
+            padding-top:8px;
         }
         .joomla li {
             min-width:210px;
         }
       </style>
    </head>
-   
+
    <body>
         <div class="container">
             <div class="page-header"><h1>aeSecure - Kill DB tables</h1></div>
-         
-            <form id="form">  
+
+            <form id="form">
                 <div class="joomla text-success bg-success">
                     <i class="fa fa-joomla fa-spin" aria-hidden="true"></i>&nbsp;Website : <strong><?php echo $JConfig->sitename; ?></strong>
                     <ul class="fa-ul list-inline">
@@ -282,9 +282,9 @@ switch ($task) {
                         <li><i class="fa-li fa fa-table"></i>Prefix : <?php echo $JConfig->dbprefix; ?></li>
                         <li><i class="fa-li fa fa-user"></i>User : <?php echo $JConfig->user; ?></li>
                     </ul>
-         
+
                     </div>
-                <div class="text-info">       
+                <div class="text-info">
                     <p>Use the text entry below to filter the list of tables to see **ONLY** those you want to remove from your database. When done press the <strong>Kill selected tables</strong> button.</p>
                     <p>The script will display the list of concerned tables for confirmation and, if you confirm the deletion, tables will then be dropped out of your database.</p>
                     <p class="text-danger">When killed, there is no way to retrieve tables (except if you've a backup) so YOU NEED TO BE REALLY SURE of what you're doing.</p>
@@ -295,39 +295,39 @@ switch ($task) {
                     <button type="button" disabled="disabled" id="btnKillSelected" class="hidden btn btn-warning"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;2. Kill selected tables from your database</button>
                     <button type="button" disabled="disabled" id="btnDoIt" class="hidden btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;3. Yes, remove these tables</button>
                     <button type="button" id="btnKillMe" class="btn btn-danger pull-right" style="margin-left:10px;"><i class="fa fa-eraser" aria-hidden="true"></i>&nbsp;Remove this script</button>
-                </div>        
+                </div>
             </form>
 
             <div id="Result">&nbsp;</div>
-            
+
         </div>
-       
+
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.25.3/js/jquery.tablesorter.combined.min.js"></script>
         <script type="text/javascript">
-         
+
         $(document).ready(function() {
 
            $('#btnDoIt').prop("disabled", true).addClass('hidden');
            $('#btnGetList').trigger('click');
 
         }); // $( document ).ready()
-        
+
         $('#search').keydown(function (e) {
-            
+
             if ($('#search').val().length>0) {
                 $('#btnKillSelected').prop("disabled", false).removeClass('hidden');
             } else {
                 $('#btnKillSelected').prop("disabled", true).addClass('hidden');
             }
-            
+
         }); // $('#search').change(function () {
-        
-        $('#btnGetList').click(function(e)  { 
-            
+
+        $('#btnGetList').click(function(e)  {
+
             $('#search').val('');
-            
+
             var $data = new Object;
             $data.task = "getList";
 
@@ -340,48 +340,48 @@ switch ($task) {
                url: "<?php echo basename(__FILE__); ?>",
                data:$data,
                datatype:"html",
-               success: function (data) { 
-                  $('#Result').html(data);    
-                  $('#search').prop("disabled", false);  
+               success: function (data) {
+                  $('#Result').html(data);
+                  $('#search').prop("disabled", false);
                   initTableSort();
                }
-            }); // $.ajax() 
-            e.stopImmediatePropagation(); 
+            }); // $.ajax()
+            e.stopImmediatePropagation();
 
         });
-        
-         $('#btnKillSelected').click(function(e)  { 
-         
-            e.stopImmediatePropagation(); 
-            
+
+         $('#btnKillSelected').click(function(e)  {
+
+            e.stopImmediatePropagation();
+
             var $data = new Object;
             $data.task = "KillSelected";
             $data.doit= "0";
             $data.pattern = window.btoa(encodeURIComponent($('#search').val()));
-            
+
             $.ajax({
-                
+
                beforeSend: function() {
                   $('#Result').html('<div><span class="ajax_loading">&nbsp;</span><span style="font-style:italic;font-size:1.5em;">Please wait...</span></div>');
-                  $('#btnKillSelected').prop("disabled", true);  
-                  $('#btnKillMe').prop("disabled", true);    
-                  $('#search').prop("disabled", true);        
-               },// beforeSend()               
+                  $('#btnKillSelected').prop("disabled", true);
+                  $('#btnKillMe').prop("disabled", true);
+                  $('#search').prop("disabled", true);
+               },// beforeSend()
                async:true,
                type:"GET",
                url: "<?php echo basename(__FILE__); ?>",
                data:$data,
                datatype:"html",
-               success: function (data) { 
-               
+               success: function (data) {
+
                   $('#btnKillSelected').prop("disabled", false);
-                  $('#btnKillMe').prop("disabled", false);     
-                  $('#search').prop("disabled", false);    
-                  
+                  $('#btnKillMe').prop("disabled", false);
+                  $('#search').prop("disabled", false);
+
                   $('#btnDoIt').prop("disabled", false).toggleClass('hidden');
-                  
-                  $('#Result').html(data);    
-                  
+
+                  $('#Result').html(data);
+
                }, // success
                error: function(Request, textStatus, errorThrown) {
                   $('#btnKillSelected').prop("disabled", false);
@@ -397,46 +397,46 @@ switch ($task) {
                   $msg = $msg + 'URL that has returned the error : <a target="_blank" href="'+$url+'">'+$url+'</a><br/><br/>';
                   $msg = $msg + '</div>';
                   $('#Result').html($msg);
-               } // error                 
+               } // error
             }); // $.ajax()
-         }); 
-         
-         $('#btnDoIt').click(function(e)  { 
-         
-            e.stopImmediatePropagation(); 
-            
+         });
+
+         $('#btnDoIt').click(function(e)  {
+
+            e.stopImmediatePropagation();
+
             var $data = new Object;
             $data.task = "KillSelected";
             $data.doit= "1";
             $data.pattern = window.btoa(encodeURIComponent($('#search').val()));
-            
+
             $.ajax({
-                
+
                beforeSend: function() {
                   $('#Result').html('<div><span class="ajax_loading">&nbsp;</span><span style="font-style:italic;font-size:1.5em;">Please wait...</span></div>');
-                  $('#btnKillSelected').prop("disabled", true);  
-                  $('#btnKillMe').prop("disabled", true);    
+                  $('#btnKillSelected').prop("disabled", true);
+                  $('#btnKillMe').prop("disabled", true);
                   $('#btnDoIt').prop("disabled", true);
-                  $('#search').prop("disabled", true);        
-               },// beforeSend()               
+                  $('#search').prop("disabled", true);
+               },// beforeSend()
                async:true,
                type:"GET",
                url: "<?php echo basename(__FILE__); ?>",
                data:$data,
                datatype:"html",
-               success: function (data) { 
-               
+               success: function (data) {
+
                   $('#btnKillSelected').prop("disabled", true).addClass('hidden');
                   $('#btnDoIt').prop("disabled", true).toggleClass('hidden');
-                  
+
                   $('#btnGetList').prop("disabled", false).removeClass('hidden');
                   $('#btnKillMe').prop("disabled", false);
-                  
-                  $('#search').prop("disabled", false);    
+
+                  $('#search').prop("disabled", false);
                   $('#search').val('');
-                  
-                  $('#Result').html(data);    
-                  
+
+                  $('#Result').html(data);
+
                }, // success
                error: function(Request, textStatus, errorThrown) {
                   $('#btnKillSelected').prop("disabled", false);
@@ -452,13 +452,13 @@ switch ($task) {
                   $msg = $msg + 'URL that has returned the error : <a target="_blank" href="'+$url+'">'+$url+'</a><br/><br/>';
                   $msg = $msg + '</div>';
                   $('#Result').html($msg);
-               } // error                 
+               } // error
             }); // $.ajax()
-         }); 
-         
+         });
+
         // Remove this script
-        $('#btnKillMe').click(function(e)  { 
-           e.stopImmediatePropagation(); 
+        $('#btnKillMe').click(function(e)  {
+           e.stopImmediatePropagation();
 
            var $data = new Object;
            $data.task = "killMe";
@@ -466,21 +466,21 @@ switch ($task) {
            $.ajax({
               beforeSend: function() {
                  $('#Result').empty();
-                 $('#btnKillSelected').prop("disabled", true); 
-                 $('#btnKillMe').prop("disabled", true);                            
+                 $('#btnKillSelected').prop("disabled", true);
+                 $('#btnKillMe').prop("disabled", true);
               },// beforeSend()
               async:true,
               type:"POST",
               url: "<?php echo basename(__FILE__); ?>",
               data:$data,
               datatype:"html",
-              success: function (data) { 
+              success: function (data) {
                  $('#form').remove();
-                 $('#Result').html(data);     
+                 $('#Result').html(data);
               }
            }); // $.ajax()
-        }); // $('#KillMe').click()   
-      
+        }); // $('#KillMe').click()
+
         function initTableSort() {
 
            $("#tbl").tablesorter({
@@ -499,7 +499,7 @@ switch ($task) {
                widgetOptions: {
                   uitheme: "ice",
                   filter_columnFilters: false
-               },               
+               },
                sortList: [[0]]  // Sort by default on the table name
             });
 
@@ -507,8 +507,8 @@ switch ($task) {
             $.tablesorter.filter.bindSearch( $("#tbl"), $('.filter') );
 
          } // function initTableSort()
-            
+
       </script>
-      
+
    </body>
 </html>

@@ -16,7 +16,7 @@ Easy way to display a carousel on any Joomla website.  Use Bootstrap, ReReplacer
 
 > Quickly check if your database is up and running and obtain the list of tables (and number of records in each of them.
 
-`check_db.php` will retrieve the database's configuration from your Joomla's `configuration.php` file and will establish a connection with your server.  In case of failure, you'll obtain technical informations about the encountered error. 
+`check_db.php` will retrieve the database's configuration from your Joomla's `configuration.php` file and will establish a connection with your server.  In case of failure, you'll obtain technical informations about the encountered error.
 
 [go to check_db](https://github.com/cavo789/joomla_free/tree/master/src/check_db)
 
@@ -38,12 +38,12 @@ The `dump_db.php` script will generate an extract of your database and immediatl
 
 ### folder_size
 
-> Do you know the size of your website ?  How many megabytes/gigabytes ? 
+> Do you know the size of your website ?  How many megabytes/gigabytes ?
 
-Searching for a tool that will display the disk size taken by your website and display the results : 
+Searching for a tool that will display the disk size taken by your website and display the results :
 
-1. By folder (*which ones is the biggest consumer ?*)
-2. By file's extensions (*what's the size of all pdfs, images, ...? ?*)
+1.  By folder (*which ones is the biggest consumer ?*)
+2.  By file's extensions (*what's the size of all pdfs, images, ...? ?*)
 
 All these questions and more will find an answer with the `folder_size.php` script.
 
@@ -51,7 +51,7 @@ All these questions and more will find an answer with the `folder_size.php` scri
 
 ### kill_db_tables
 
-> Want a fast way to clean your database ? 
+> Want a fast way to clean your database ?
 
 `kill_db_tables.php` will display the list of tables found in your database and, thanks to a filtering, you'll define a pattern like f.i. "backup" for matching every tables with that word in their names.  Then, after confirmation, the script will remove these tables from your db.
 
@@ -85,7 +85,7 @@ All these questions and more will find an answer with the `folder_size.php` scri
 
 > Take a backup of your website or any folder, quickly.
 
-By putting the `zip.php` script in any of your folder, you'll get an archive of that folder (subfolders included).  By putting the script in your website's rootfolder you'll then get a backup (of files) of your website.  No more difficult than that. 
+By putting the `zip.php` script in any of your folder, you'll get an archive of that folder (subfolders included).  By putting the script in your website's rootfolder you'll then get a backup (of files) of your website.  No more difficult than that.
 
 `unzip.php` will allow you to unzip any `.zip` file stored in the same folder of the script.
 

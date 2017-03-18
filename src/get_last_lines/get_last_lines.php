@@ -1,5 +1,5 @@
 /**
- * Code PHP pour lire un fichier texte et afficher les dernières lignes du fichier; comme un tail() sous Unix
+ * Code PHP pour lire un fichier texte et afficher les derniï¿½res lignes du fichier; comme un tail() sous Unix
  */
 
 
@@ -19,7 +19,7 @@ class aeSecureHTTP
      */
     public static function HeaderNoCache()
     {
-  
+
         header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1.
         header('Pragma: no-cache'); // HTTP 1.0.
         header('Expires: 0'); // Proxies.
@@ -51,7 +51,7 @@ class aeSecureFiles
         }
         return $linecount;
     } // function getFileNumberOfLines()
-   
+
    /**
     * Get the last xxx lines of a text file
     */
@@ -73,13 +73,13 @@ aeSecureHTTP::HeaderNoCache();
 $linecount=aeSecureFiles::getFileNumberOfLines(FILENAME);
 
 $sLines='';
-  
+
 if (file_exists(FILENAME)) {
     $maxLines=isset($_GET['max'])?(int) $_GET['max']:MAX_NUMLINES;
-      
+
    // Get the last lines of the file
     $tmp=aeSecureFiles::getFileLastLines(FILENAME, $maxLines);
-     
+
     $i=($linecount-$maxLines);
     foreach (preg_split("/((\r?\n)|(\r\n?))/", $tmp) as $line) {
         $i+=1;
@@ -89,16 +89,16 @@ if (file_exists(FILENAME)) {
 } else {
     $sLines='<div class="alert alert-danger" role="alert"><strong>File not found</strong>&nbsp;'.FILENAME.'</div>';
 }
-  
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
    <head>
       <meta charset="utf-8" />
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>aeSecure - Last <?php echo $maxLines; ?> lines of <?php echo basename(FILENAME);?></title>     
+      <title>aeSecure - Last <?php echo $maxLines; ?> lines of <?php echo basename(FILENAME);?></title>
       <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
    </head>
    <body>

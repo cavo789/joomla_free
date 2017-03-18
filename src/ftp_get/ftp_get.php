@@ -1,5 +1,5 @@
 <?php
-  
+
 // Specify your FTP host, login, password and port (21 for FTP and 22 for SFTP)
 $FTP_host='';
 $FTP_login='';
@@ -29,7 +29,7 @@ require_once('libs/FtpWrapper.php');
 
 $ftp = new \FtpClient\FtpClient();
 $handle=$ftp->connect($FTP_host);
-   
+
 try {
     $obj=$ftp->login($FTP_login, $FTP_pwd);
 } catch (Exception $ex) {
@@ -41,15 +41,15 @@ if ($obj!=null) {
     if ($FTP_folder!='') {
         $ftp->chdir($FTP_folder);
     }
-      
+
    // Downloads a file from the FTP server and saves to an open file
     if (trim($FTP_LocalFileName)=='') {
         $FTP_LocalFileName=$FTP_DownloadFileName;
     }
-      
+
     $ftp->get($FTP_LocalFileName, $FTP_DownloadFileName, $FTP_Mode, 0);
 } else {
     echo '<strong>FTP connexion error : '.$msg_err.'</strong>';
 } // if ($obj!=null)
-       
+
 unset($ftp);

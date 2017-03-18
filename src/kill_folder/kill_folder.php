@@ -8,7 +8,7 @@
  * Kill a folder : put this script inside a folder (f.i. /cache) and every files inside that folder except .htaccess and index.html will be removed.
  * All subfolders will be removed too
  */
- 
+
 define('DEBUG', false);
 define('DS', DIRECTORY_SEPARATOR);
 
@@ -17,7 +17,7 @@ define('DS', DIRECTORY_SEPARATOR);
  */
 class aeSecureFct
 {
-   
+
    /**
     * Generic function for adding a js in the HTML response
     * @param type $localfile
@@ -26,9 +26,9 @@ class aeSecureFct
     */
     public static function addJavascript($localfile, $weblocation = '', $defer = false)
     {
-      
+
         $return='';
-   
+
         if (is_file(dirname(__DIR__).DS.'assets'.DS.'js'.DS.$localfile)) {
             $return='<script '.($defer==true?'defer="defer" ':'').'type="text/javascript" src="../assets/js/'.$localfile.'"></script>';
         } else {
@@ -46,9 +46,9 @@ class aeSecureFct
     */
     public static function addStylesheet($localfile, $weblocation = '')
     {
-      
+
         $return='';
-   
+
         if (is_file(dirname(__DIR__).DS.'assets'.DS.'css'.DS.$localfile)) {
             $return='<link href="../assets/css/'.$localfile.'" rel="stylesheet" />';
         } else {
@@ -65,17 +65,17 @@ function doIt($folder)
 
    // Be sure to have the folder separator
     $folder=rtrim($folder, DS).DS;
-   
+
     error_reporting(E_ALL);
     ini_set('display_errors', 'On');
     $script_name = basename(__FILE__);
-   
+
     $return= '<h3>Suppression de tous les fichiers et sous-dossier de '.$folder.'</h3>';
-   
+
     $it = new RecursiveDirectoryIterator($folder);
-   
+
     $wCount=0;
-   
+
     foreach (new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST) as $file) {
         if (($file->isDir()) && (!in_array($file->getFilename(), array('.', '..')))) {
             $return.='<h4>Suppression du dossier '.$file->getPathname().'</h4>';
@@ -92,13 +92,13 @@ function doIt($folder)
             }
         }
     } // foreach
-   
+
     $return.='<hr/><h2 class="text-success">Nettoyage termin&eacute;</h2>';
     $return.='<p>'.$wCount.' fichiers supprimés</p>';
-   
+
     return $return;
 } // function doIt()
-   
+
 // -------------------------------------------------
 //
 // ENTRY POINT
@@ -111,7 +111,7 @@ $var=(DEBUG===true?$_GET:$_POST);
 
 // Folder to clean
 $folder=dirname(__FILE__);
-   
+
 if (isset($var['task'])) {
     $task=$var['task'];
     if ($task=='doIt') {
@@ -158,34 +158,34 @@ if (isset($var['task'])) {
          <div class="container">
             <p style="font-size:2em;" class="text-danger">Ce script va supprimer tous les fichiers contenus dans le dossier <strong><?php echo $folder; ?></strong> &agrave; l'exception des fichiers /.htaccess et /index.(html|php).</p>
             <br/>
-            <form>  
+            <form>
                <button type="button" id="CleanFolder" class="btn btn-primary">Nettoyer</button>
                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-               <button type="button" id="KillMe" class="btn btn-danger">Supprimer ce script</button>   
+               <button type="button" id="KillMe" class="btn btn-danger">Supprimer ce script</button>
             </form>
             <hr/>
             <div id="Result">&nbsp;</div>
-         </div>   
+         </div>
        </div>
-   
+
         <?php
          echo aeSecureFct::addJavascript('jquery.min.js', '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');
          echo aeSecureFct::addJavascript('bootstrap.min.js', '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js');
         ?>
-     
+
       <script type="text/javascript" defer="defer">
-      
-         $('#CleanFolder').click(function(e)  { 
-      
+
+         $('#CleanFolder').click(function(e)  {
+
             e.stopImmediatePropagation();
-         
+
             var $data = new Object;
             $data.task = "doIt"
 
             $.ajax({
                beforeSend: function() {
                   $('#Result').html('<div><span class="ajax_loading">&nbsp;</span><span style="font-style:italic;font-size:1.5em;">Un peu de patience svp...</span></div>');
-                  $('#CleanFolder').prop("disabled", true);             
+                  $('#CleanFolder').prop("disabled", true);
                   $('#KillMe').prop("disabled", true);
                },// beforeSend()
                async:true,
@@ -193,14 +193,14 @@ if (isset($var['task'])) {
                url: "<?php echo basename(__FILE__); ?>",
                data:$data,
                datatype:"html",
-               success: function (data) { 
-                  $('#Result').html(data);    
-                  $('#CleanFolder').prop("disabled", false);                            
-                  $('#KillMe').prop("disabled", false); 
+               success: function (data) {
+                  $('#Result').html(data);
+                  $('#CleanFolder').prop("disabled", false);
+                  $('#KillMe').prop("disabled", false);
                }, // success
                error: function(Request, textStatus, errorThrown) {
-                  $('#CleanFolder').prop("disabled", false); 
-                  $('#KillMe').prop("disabled", false); 
+                  $('#CleanFolder').prop("disabled", false);
+                  $('#KillMe').prop("disabled", false);
                   // Display an error message to inform the user about the problem
                   var $msg = '<div class="bg-danger text-danger img-rounded" style="margin-top:25px;padding:10px;">';
                   $msg = $msg + '<strong>An error has occured :</strong><br/>';
@@ -212,31 +212,31 @@ if (isset($var['task'])) {
                   $msg = $msg + 'URL that has returned the error : <a target="_blank" href="'+$url+'">'+$url+'</a><br/><br/>';
                   $msg = $msg + '</div>';
                   $('#Result').html($msg);
-               } // error                 
+               } // error
             }); // $.ajax()
          });  // $('#CleanFolder').click()
-      
-         $('#KillMe').click(function(e)  { 
-            e.stopImmediatePropagation(); 
+
+         $('#KillMe').click(function(e)  {
+            e.stopImmediatePropagation();
             $.ajax({
                beforeSend: function() {
                   $('#Result').empty();
-                  $('#CleanFolder').prop("disabled", true); 
-                  $('#KillMe').prop("disabled", true);             
+                  $('#CleanFolder').prop("disabled", true);
+                  $('#KillMe').prop("disabled", true);
                },// beforeSend()
                async:true,
                type:"<?php echo (DEBUG===true?'GET':'POST'); ?>",
                url: "<?php echo basename(__FILE__); ?>",
                data:"task=killMe",
                datatype:"html",
-               success: function (data) { 
-                  $('#Result').html(data);     
+               success: function (data) {
+                  $('#Result').html(data);
                }
             }); // $.ajax()
          }); // $('#KillMe').click()
-      
+
       </script>
-      
+
    </body>
-   
+
 </html>

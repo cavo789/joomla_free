@@ -1,6 +1,6 @@
 # log_admin
 
-When you don't remember again your super admin account or even password, log_admin will allow you to start your administrator interface by, just, putting this script in your admin folder. 
+When you don't remember again your super admin account or even password, log_admin will allow you to start your administrator interface by, just, putting this script in your admin folder.
 
 Don't be blocked anymore or don't play anymore with phpMyAdmin for creating a new admin / resetting the password / ..., just use this straigth-forward script
 
@@ -16,10 +16,10 @@ The "official" (= recommended by the Joomla project) way is either to edit the c
 
 Download a copy of the `log_admin.php` script in your `/administrator` folder of Joomla.
 
-1. Get a raw version of the script : click on the `raw` button or go to this URL : https://raw.githubusercontent.com/cavo789/joomla_free/master/src/log_admin/log_admin.php
-2. On your computer, start a text editor like Notepad or Notepad++ and copy/paste there the code
-3. Save the file (if you're using Notepad++, check in the Encoding menu that you've selected UTF8 NoBom as encoding)
-4. Put the saved file in your `/administrator` folder
+1.  Get a raw version of the script : click on the `raw` button or go to this URL : [https://raw.githubusercontent.com/cavo789/joomla_free/master/src/log_admin/log_admin.php](https://raw.githubusercontent.com/cavo789/joomla_free/master/src/log_admin/log_admin.php)
+2.  On your computer, start a text editor like Notepad or Notepad++ and copy/paste there the code
+3.  Save the file (if you're using Notepad++, check in the Encoding menu that you've selected UTF8 NoBom as encoding)
+4.  Put the saved file in your `/administrator` folder
 
 ## Run it
 

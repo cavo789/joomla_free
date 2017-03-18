@@ -58,7 +58,7 @@ $session->set('user', $user);
 $app = JFactory::getApplication();
 $app->checkSession();
 
-// Now, self delete this script 
+// Now, self delete this script
 if (unlink(__FILE__)) {
     $msg = 'The '.__FILE__.' has been successfully deleted.';
     $msgType = 'message';

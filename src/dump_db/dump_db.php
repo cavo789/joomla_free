@@ -6,7 +6,7 @@
  * Generate a dump of the database, download it and remove temporary files from the server (NOT THIS SCRIPT)
  *
  */
- 
+
 define('DEBUG', false);
 define('ZIP', true);
 
@@ -16,7 +16,7 @@ if (!defined('DS')) {
 
 class aeSecureFct
 {
-   
+
    /**
     * Safely read posted variables
     *
@@ -27,10 +27,10 @@ class aeSecureFct
     */
     public static function getParam($name, $type = 'string', $default = '', $base64 = false)
     {
-      
+
         $tmp='';
         $return=$default;
-      
+
         if (isset($_POST[$name])) {
             if (in_array($type, array('int','integer'))) {
                 $return=filter_input(INPUT_POST, $name, FILTER_SANITIZE_NUMBER_INT);
@@ -47,7 +47,7 @@ class aeSecureFct
                 $return=$_POST[$name];
             }
         } else { // if (isset($_POST[$name]))
-     
+
             if (isset($_GET[$name])) {
                 if (in_array($type, array('int','integer'))) {
                     $return=filter_input(INPUT_GET, $name, FILTER_SANITIZE_NUMBER_INT);
@@ -65,11 +65,11 @@ class aeSecureFct
                 }
             } // if (isset($_GET[$name]))
         } // if (isset($_POST[$name]))
-      
+
         if ($type=='boolean') {
             $return=(in_array($return, array('on','1'))?true:false);
         }
-      
+
         return $return;
     } // function getParam()
 
@@ -86,18 +86,18 @@ class aeSecureFct
 
 class aeSecureSession
 {
-   
+
     protected static $instance = null;
-   
+
     function __construct($bDestroy = false)
     {
-      
+
         // server should keep session data for AT LEAST 15 minutes
         ini_set('session.gc_maxlifetime', 900);
 
         // each client should remember their session id for EXACTLY 15 minutes
         session_set_cookie_params(900);
-            
+
         if (!isset($_SESSION)) {
             try {
                 if (session_id()=='') {
@@ -111,18 +111,18 @@ class aeSecureSession
                 session_start();
             } // try
         }
-      
+
         if ($bDestroy) {
             session_destroy();
         }
-      
+
         if (!(isset($_SESSION['sFileName']))) {
             self::set('sFileName', '');
         }
         if (!(isset($_SESSION['bZIP']))) {
             self::set('bZIP', ZIP);
         }
-      
+
         return true;
     } // function __construct()
     public static function getInstance($bDestroy = false)
@@ -150,11 +150,11 @@ class aeSecureDumpDatabase
 {
 
     protected static $instance = null;
-   
+
     function __construct()
     {
     } // function __construct()
-   
+
     public static function getInstance()
     {
         if (self::$instance === null) {
@@ -165,17 +165,17 @@ class aeSecureDumpDatabase
 
     public function doIt()
     {
-       
+
         ini_set('max_execution_time', 3600);
 
         // Get Joomla's configuration so dbname, host, user and password is retrieved for the current site
-   
+
         require('configuration.php');
 
         $config = new JConfig();
-   
+
         $folder=__DIR__;
-   
+
         // Generate a temporary file with those credentials.
 
         $credentialsFile=rtrim($folder, DS).DS.'mysql-credentials.txt';
@@ -183,27 +183,27 @@ class aeSecureDumpDatabase
         $fp = fopen($credentialsFile, 'w');
         fwrite($fp, "[client]\nuser=$config->user\npassword=$config->password\nhost=$config->host");
         fclose($fp);
-   
+
         $dump=rtrim($folder, DS).DS.'dump.sql';
-   
+
         // Dump the database
-   
+
         system("mysqldump --defaults-extra-file=$credentialsFile $config->db > $dump");
-   
+
         // If the dump isn't found, stop
-   
+
         if (!file_exists($dump)) {
             echo "Error : could not find $dump, exit.";
             unlink($credentialsFile);
             die();
         }
-   
+
         // No more needed
-   
+
         unlink($credentialsFile);
-   
+
         // Create a ZIP file if requested
-   
+
         if (ZIP) {
             $zip = new ZipArchive();
             $zipFile=$dump.'.zip';
@@ -223,13 +223,13 @@ class aeSecureDumpDatabase
             unlink($dump);
             rename($zipFile, $dump);
         }
-      
+
         return $dump;
     } // public function doIt()
-   
+
     public function download($filename)
     {
-       
+
         if (file_exists($filename)) {
             header("Content-Type: ".(ZIP?"application/zip":"application/force-download"));
             header("Content-Transfer-Encoding: binary");
@@ -242,7 +242,7 @@ class aeSecureDumpDatabase
             // Avoid Safari bug
             @ob_clean();
             @flush();
-    
+
             readfile($filename);
             unlink($filename);
         } else {
@@ -258,7 +258,7 @@ class aeSecureDumpDatabase
 // ENTRY POINT
 //
 // -------------------------------------------------
-   
+
 if (DEBUG===true) {
     ini_set("display_errors", "1");
     ini_set("display_startup_errors", "1");
@@ -272,43 +272,43 @@ if (DEBUG===true) {
 }
 
 $task=aeSecureFct::getParam('task', 'string', '', false);
-   
+
 if ($task!='') {
     $aeSession=aeSecureSession::getInstance();
     $aeDumpDB=aeSecureDumpDatabase::getInstance();
-      
+
     switch ($task) {
         case 'doIt':
             $aeSession->set('sFileName', $aeDumpDB->doIt());
             break;
-         
+
         case 'download':
             $fname=$aeSession->get('sFileName', '');
             if ($fname!=='') {
                 echo $aeDumpDB->download($fname);
             }
             break;
-            
+
         case 'killMe':
             $return.='<p class="text-success">Le script '.__FILE__.' a &eacute;t&eacute; supprim&eacute; du serveur avec succ&egrave;s</p>';
-            
+
             // Kill this script
             unlink(__FILE__);
-            
+
             echo $return;
-            
+
             break;
     } // switch
-      
+
     unset($aeDumpDB);
     unset($aeSession);
-      
+
     die();
 } // if ($task!='')
-   
-   
+
+
 ?>
- 
+
 <!DOCTYPE html>
 <html lang="fr">
    <head>
@@ -321,7 +321,7 @@ if ($task!='') {
       <title>aeSecure - Dump database</title>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
       <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.25.3/css/theme.ice.min.css" rel="stylesheet" media="screen" />
-      <link href= "data:image/x-icon;base64,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" rel="shortcut icon" type="image/vnd.microsoft.icon"/>      
+      <link href= "data:image/x-icon;base64,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" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
       <style type="text/css">
          #Result{margin-top:25px;}
          .blink {animation: blink 1s steps(5, start) infinite; -webkit-animation: blink 1s steps(5, start) infinite;} @keyframes blink {to {visibility: hidden;}} @-webkit-keyframes blink {to {visibility: hidden;}}
@@ -346,41 +346,41 @@ if ($task!='') {
                <br/>
             </div>
             <div id="Result">&nbsp;</div>
-         </div>   
+         </div>
       </div>
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
       <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
       <script type="text/javascript">
-      
-         $('#btnDoIt').click(function(e)  { 
-         
-            e.stopImmediatePropagation(); 
-            
+
+         $('#btnDoIt').click(function(e)  {
+
+            e.stopImmediatePropagation();
+
             var $data = new Object;
             $data.task = "doIt";
-            
+
             $.ajax({
-                
+
                beforeSend: function() {
                   $('#Result').html('<div><span class="ajax_loading">&nbsp;</span><span style="font-style:italic;font-size:1.5em;">Un peu de patience svp...</span></div>');
-                  $('#btnDoIt').prop("disabled", true);  
-                  $('#btnKillMe').prop("disabled", true);           
-               },// beforeSend()               
+                  $('#btnDoIt').prop("disabled", true);
+                  $('#btnKillMe').prop("disabled", true);
+               },// beforeSend()
                async:true,
                type:"POST",
                url: "<?php echo basename(__FILE__); ?>",
                data:$data,
                datatype:"html",
-               success: function (data) { 
-               
+               success: function (data) {
+
                   $('#btnDoIt').prop("disabled", false);
-                  $('#btnKillMe').prop("disabled", false);  
+                  $('#btnKillMe').prop("disabled", false);
                   var w = window.open("<?php echo basename(__FILE__); ?>?task=download");
-                  
+
                   if(w!==undefined) {
                       $("#Result").html('<p class="text-success">Le fichier est en cours de téléchargement...</p>');
                   } else {
-                      $("#Result").html('<p class="text-danger blink"><strong>Veuillez autoriser les popups sur ce site s\'il vous plaît.  Cliquez à nouveau sur ce bouton ensuite.</strong></p>');               
+                      $("#Result").html('<p class="text-danger blink"><strong>Veuillez autoriser les popups sur ce site s\'il vous plaît.  Cliquez à nouveau sur ce bouton ensuite.</strong></p>');
                   }
                }, // success
                error: function(Request, textStatus, errorThrown) {
@@ -397,34 +397,34 @@ if ($task!='') {
                   $msg = $msg + 'URL that has returned the error : <a target="_blank" href="'+$url+'">'+$url+'</a><br/><br/>';
                   $msg = $msg + '</div>';
                   $('#Result').html($msg);
-               } // error                 
+               } // error
             }); // $.ajax()
-         }); 
+         });
 
       // Remove this script
-      $('#btnKillMe').click(function(e)  { 
-         e.stopImmediatePropagation(); 
-         
+      $('#btnKillMe').click(function(e)  {
+         e.stopImmediatePropagation();
+
          var $data = new Object;
          $data.task = "killMe";
-         
+
          $.ajax({
             beforeSend: function() {
                $('#Result').empty();
-               $('#btnDoIt').prop("disabled", true); 
-               $('#btnKillMe').prop("disabled", true);                            
+               $('#btnDoIt').prop("disabled", true);
+               $('#btnKillMe').prop("disabled", true);
             },// beforeSend()
             async:true,
             type:"POST",
             url: "<?php echo basename(__FILE__); ?>",
             data:$data,
             datatype:"html",
-            success: function (data) { 
+            success: function (data) {
                $('#intro').remove();
-               $('#Result').html(data);     
+               $('#Result').html(data);
             }
          }); // $.ajax()
-      }); // $('#KillMe').click()        
+      }); // $('#KillMe').click()
 
       </script>
    </body>
