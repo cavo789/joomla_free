@@ -30,6 +30,10 @@ Don't forget to remove the script once you've finished with it.
 Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
 Based on the work of @cafewebmaster.com and of Bernhard Waldbrunner, PHP grep, Copyright (C) 2012
 
+## Special thanks
+
+Thank you to Loïc Martin (lomart) who has mentionned this script on the French Joomla.fr forum (https://forum.joomla.fr/showthread.php?221466-Comment-faire-une-recherche-dans-plusieurs-fichiers-php#post1132581)
+
 -----
 
 [Get other free scripts](https://github.com/cavo789/joomla_free)
