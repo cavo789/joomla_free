@@ -317,7 +317,9 @@ if ($task != '') {
                     data:$data,
                     datatype:"html",
                     success: function (data) {
-                        $('#Result').html(data);
+						$('#Result').html(data);
+						$('#btnDoIt').prop("disabled", false);
+						$('#btnKillMe').prop("disabled", false);
                     }
 				}); // $.ajax()
 			});
