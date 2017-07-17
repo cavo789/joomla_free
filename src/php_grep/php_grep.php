@@ -142,7 +142,7 @@ $folder = trim(aeSecureFct::getParam('path', 'string', $default, true));
 $query = trim(aeSecureFct::getParam('query', 'string', '', true));
 
 // Filter for file's restriction (like *.php)
-$filter = trim(aeSecureFct::getParam('filter', 'string', '*', true));
+$filter = trim(aeSecureFct::getParam('filter', 'string', '', true));
 
 // follow symbolic links or not
 $links = aeSecureFct::getParam('links', 'boolean', false, false);
@@ -154,6 +154,10 @@ if ($task != '') {
     switch ($task) {
 
         case 'doIt':
+
+            if ($filter == "") {
+                $filter = "*";
+            }
 
             $results = "";
             if ($query !== "") {
@@ -248,9 +252,9 @@ if ($task != '') {
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="filter" class="col-sm-2 control-label">Filtre&nbsp;:</label>
+							<label for="filter" class="col-sm-2 control-label">Filtre sur fichiers&nbsp;:</label>
 							<div class="col-sm-10">
-								<input type="text" id="filter" name="filter" size="30" placeholder="*.php"  class="form-control"value="<?php echo $filter; ?>" />
+								<input type="text" id="filter" name="filter" size="30" placeholder="Par exemple : *.php, *.css, *.js, ... ou encore * pour tous les fichiers"  class="form-control"value="<?php echo $filter; ?>" />
 							</div>
 						</div>
 						<div class="form-group">

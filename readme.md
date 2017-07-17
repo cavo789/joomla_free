@@ -69,9 +69,15 @@ All these questions and more will find an answer with the `folder_size.php` scri
 
 > You've forget your admin login or admin password ?  Use `log_admin.php` and connect to your backend
 
-`log_admin.php` is a script proposed by **Yann Gomiero** on the French Joomla.fr forum.  This script is really straigt-forward and easy : put the script in the `/administrator` folder and run it.  It's done, you're connected on your administrator.   
+`log_admin.php` is a script proposed by **Yann Gomiero** on the French Joomla.fr forum.  This script is really straigt-forward and easy : put the script in the `/administrator` folder and run it.  It's done, you're connected on your administrator.
 
 [go to log_admin](https://github.com/cavo789/joomla_free/tree/master/src/log_admin)
+
+### php_grep
+
+This script will allow you to scan files of your website and search for a specific pattern; f.i. a word or a sentence.
+
+[go to php_grep](https://github.com/cavo789/joomla_free/tree/master/src/php_grep)
 
 ### show_table
 
