@@ -174,8 +174,8 @@ switch ($task) {
 
         $sSQL="SELECT * FROM INFORMATION_SCHEMA.TABLES ".
            "WHERE (TABLE_SCHEMA LIKE '".$JConfig->db."') AND ".
-            "(TABLE_NAME LIKE '%".$mysqli->real_escape_string($pattern)."%') ".
-            "ORDER BY TABLE_NAME;";
+		   "(TABLE_NAME LIKE '%".$mysqli->real_escape_string(str_replace('_','\_',$pattern))."%') ".
+           "ORDER BY TABLE_NAME;";
 
         $sTableList=($doIt!=1
             ? '<h2 class="text-danger">You\'re about to remove these tables from your database.  Are you sure ? </h2>'
