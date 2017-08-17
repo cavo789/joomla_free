@@ -1,16 +1,22 @@
 <?php
 
 /**
+ * On the French Joomla! forum (http://forum.joomla.fr), Yann Gomiero (aka Daneel - 
+ * https://www.joomla.fr/afuj/l-afuj/item/1010-yann-gomiero) has suggested this
+ * script "log.php" to make very easy to connect on the Joomla Administration when 
+ * you don't have anymore the login and password of a super admin.
  *
- * On the French Joomla! forum (http://forum.joomla.fr), Yann Gomiero (aka Daneel - https://www.joomla.fr/afuj/l-afuj/item/1010-yann-gomiero) has suggested this
- * script "log.php" to make very easy to connect on the Joomla Administration when you don't have anymore the login and password of a super admin.
+ * Usefull when, f.i., a client is contacting you "I've forgot my login/pwd, how to 
+ * connect back in my Joomla admin ?"
  *
- * Usefull when, f.i., a client is contacting you "I've forgot my login/pwd, how to connect back in my Joomla admin ?"
+ * Credits : Yann Gomiero (see, in French, https://forum.joomla.fr/showthread.php?210994&p=1073135#post1073135)
  *
- * Credits : Yann Gomiero (see, in French, http://forum.joomla.fr/showthread.php?210994-hack%C3%A9-par&p=1073135&viewfull=1#post1073135)
+ * Note : The "official" (= recommended by the Joomla project) way is either to edit the 
+ * configuration.php file or to go phpMyAdmin and create a new user / reset an existing user.
+ * More info on https://docs.joomla.org/How_do_you_recover_or_reset_your_admin_password%3F 
  *
- * Note : The "official" (= recommended by the Joomla project) way is either to edit the configuration.php file or to go phpMyAdmin and
- * create a new user / reset an existing user.  More info on https://docs.joomla.org/How_do_you_recover_or_reset_your_admin_password%3F
+ * The latest version of this script can be found here : 
+ * https://github.com/cavo789/joomla_free/tree/master/src/log_admin
  *
  **/
 

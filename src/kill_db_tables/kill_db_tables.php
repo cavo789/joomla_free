@@ -12,7 +12,7 @@
  * So running the script is without danger ... until you confirm, manually, the deletion
  */
 
-define('DEBUG', true);
+define('DEBUG', false);
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
