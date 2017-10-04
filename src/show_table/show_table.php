@@ -74,8 +74,8 @@ define('DS', DIRECTORY_SEPARATOR);
 // Root folder of Joomla. If you've save this script in the root
 // folder of Joomla, just leave __DIR__ otherwise you'll need
 // to update this constant and specify your own root
-//define('ROOT', __DIR__);
-define('ROOT', 'C:\Christophe\Sites\beta');
+define('ROOT', __DIR__);
+//define('ROOT', 'C:\Christophe\Sites\beta');
 
 // Use this line instead the previous if you've put the script in
 // a subfolder of your website root
