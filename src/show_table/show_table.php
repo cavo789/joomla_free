@@ -257,9 +257,9 @@ class ShowTable
 				'//cdn.datatables.net/buttons/1.4.2/js/buttons.flash.min.js',
 				'//cdn.datatables.net/buttons/1.4.2/js/buttons.print.min.js',
 				'//cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js',
-				'//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js',
-				'//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js',
-				'//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'
+				'//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'
+				//'//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js',
+				//'//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js'
 			);
 
 			foreach ($arr as $js) {
@@ -277,11 +277,12 @@ class ShowTable
 				"	$('#tbl').DataTable({\n".
 				"		'fixedHeader': false,\n".
 				"		'scrollY': '60vh',\n".
+				"		'scrollX': '100%',\n".
 				"		'scrollCollapse': true,\n".
 				"		'info': true,\n".
 				"   	'fixedHeader': true,\n".
 				"   	'dom' : 'Bfrtip',\n".
-				"   	'buttons' : ['copy', 'csv', 'excel', 'pdf', 'print'], \n".
+				"   	'buttons' : ['copy', 'csv', 'excel', 'print'], \n".
 				"		'lengthMenu': [ \n".
 				"			[25, 50, 100, 500, -1], \n".
 				"			[25, 50, 100, 500, 'All'] \n".
