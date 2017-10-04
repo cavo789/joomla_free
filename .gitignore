@@ -11,3 +11,5 @@ gulpfile.js
 gulpfile.js
 build.bat
 post-composer.bat
+src/show_table/.editorconfig
+src/show_table/ruleset.xml
