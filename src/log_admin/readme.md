@@ -1,6 +1,6 @@
 # log_admin - Log to your Joomla administrator without credentials
 
-[English version](#english_version) - [Version francophone](#version_francophone)
+[English version](#english-version) - [Version francophone](#version-francophone)
 
 ## English version
 
