@@ -70,7 +70,7 @@ Notez également que ce script va simplement "essayer" de créer l'archive : il 
 
 ### Image
 
-<img src="https://github.com/cavo789/joomla_free/blob/master/src/src/zip/result.png" />
+<img src="https://github.com/cavo789/joomla_free/blob/master/src/zip/result.png" />
 
 ### Crédits
 
