@@ -22,25 +22,8 @@ The "official" (= recommended by the Joomla project) way is either to edit the `
 
 ### Install
 
-Download a copy of the `log_admin.php` script in your `/administrator` folder of Joomla.
-
-#### Get the script
-
-Two methods:
-
-##### Method one
-
-1. Get a raw version of the script: click on the `raw` button or go to this URL: [https://raw.githubusercontent.com/cavo789/joomla_free/master/src/log_admin/log_admin.php](https://raw.githubusercontent.com/cavo789/joomla_free/master/src/log_admin/log_admin.php)
-2. On your computer, start a text editor like `Notepad` or `Notepad++` and copy/paste there the code
-3. Save the file (if you're using `Notepad++`, check in the `Encoding` menu that you've selected `UTF-8` as encoding)
-4. Put the saved file in your `/administrator` folder of your website (use your FTP client for this)
-
-##### Method two
-
-1. Go to [https://github.com/cavo789/joomla_free/](https://github.com/cavo789/joomla_free/) and click on the green button `Clone or download` and select `Download ZIP`.
-2. Once download, open the zip file and retrieve the `log_admin.php` file (located in the `joomla_free-master` folder, then `src`, then `log_admin` subfolders)
-3. Save the `log_admin.php` file to your disk.
-4. Put the saved file in your /administrator folder of your website (use your FTP client for this)
+1. Make a right-clic on the hyperlink to [log_admin.php](https://raw.githubusercontent.com/cavo789/joomla_free/master/src/log_admin/log_admin.php) and select `save the target of the link as` so you can save the file on your hard disk.
+2. With a FTP client, copy the downloaded file onto your website, in the `/administrator` folder.
 
 ### Usage
 
@@ -55,7 +38,7 @@ Now, that you're in the backend, you can do what you want like:
 * Disable for instance the `Google Two Factors Authentication`,
 * ...
 
-### Images
+### Image
 
 <img src="https://github.com/cavo789/joomla_free/blob/master/src/log_admin/result.png" />
 
@@ -66,6 +49,8 @@ Yann Gomiero (aka daneel) and various contributors
 ### License
 
 [MIT](LICENSE)
+
+[Get other free scripts](https://github.com/cavo789/joomla_free)
 
 ---
 
@@ -89,25 +74,8 @@ Si vous avez copié ce script sur votre site, ne l'oubliez pas! Le script sera a
 
 ### Installation
 
-Téléchargez une copie du script `log_admin.php` dans votre dossier `/administrator` de Joomla.
-
-#### Obtenir une copie du script
-
-Vous pouvez obtenir le script `log_admin.php` de deux manières :
-
-##### Première méthode
-
-1. Obtenir une version dite `Raw` du script : cliquez sur le bouton `raw` ou allez à l'URL suivante : [https://raw.githubusercontent.com/cavo789/joomla_free/master/src/src/log_admin/log_admin.php](https://raw.githubusercontent.com/cavo789/joomla_free/master/src/log_admin/log_admin.php)
-2. Sur votre ordinateur, lancez un éditeur de texte comme `Notepad` ou `Notepad++` et copiez/collez le code.
-3. Sauvegardez le fichier (si vous utilisez `Notepad++`, vérifiez dans le menu `Encodage` que vous avez sélectionné `UTF-8` comme encodage)
-4. Mettez le fichier sauvegardé dans le dossier `/administrator` de votre site web (utilisez pour cela votre client FTP)
-
-##### Deuxième méthode
-
-1. Allez sur [https://github.com/cavo789/joomla_free/](https://github.com/cavo789/joomla_free/) et cliquez sur le bouton vert `Clone or download` et sélectionnez `Download ZIP`.
-2. Une fois le téléchargement terminé, ouvrez le fichier zip téléchargé et récupérez le fichier `log_admin.php` (situé dans le dossier `joomla_free-master`, puis `src`, puis `log_admin`)
-3. Enregistrez le fichier `log_admin.php` sur votre disque.
-4. Mettez le fichier sauvegardé dans le dossier `/administrator` de votre site web (utilisez pour cela votre client FTP)
+1. Faites un clic-droit sur le lien vers le fichier [log_admin.php](https://raw.githubusercontent.com/cavo789/joomla_free/master/src/log_admin/log_admin.php) et sélectionnez `enregistrer la cible du lien sous` afin de sauver le fichier sur votre ordinateur.
+2. Avec un client FTP, copiez le fichier que vous venez de télécharger dans le dossier `/administrator` de votre site Joomla.
 
 ### Utilisation
 
@@ -122,7 +90,7 @@ Maintenant que vous êtes dans le back-end, vous pouvez faire ce que vous voulez
 * Désactivez par exemple l'authentification `Google Two Factors Authentication`,
 * ...
 
-### Images
+### Image
 
 <img src="https://github.com/cavo789/joomla_free/blob/master/src/log_admin/result.png" />
 
@@ -130,6 +98,8 @@ Maintenant que vous êtes dans le back-end, vous pouvez faire ce que vous voulez
 
 Yann Gomiero (alias daneel) et de nombreux contributeurs
 
------
+### Licence
 
-[Get other free scripts](https://github.com/cavo789/joomla_free)
+[MIT](LICENSE)
+
+[Obtenir d'autres scripts gratuits](https://github.com/cavo789/joomla_free)
