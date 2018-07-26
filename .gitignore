@@ -5,8 +5,7 @@ gulpfile.js
 /dist
 /gulp
 /logs
-/nbproject/
-/nbproject/private/
+/.vscode/
 /node_modules/
 gulpfile.js
 build.bat
