@@ -1,14 +1,15 @@
 # show_table
 
-Are you French speaking ?  [Lire la description de show_table en Français](https://github.com/cavo789/joomla_free/blob/master/src/show_table/lisezmoi.md)
+Are you French speaking ? [Lire la description de show_table en Français](https://github.com/cavo789/joomla_free/blob/master/src/show_table/lisezmoi.md)
 
 Sometimes you've the need to extract informations from your Joomla's database like f.i. the list of users, articles, ...
 
 Recently my need was to extract quickly the list of my customers i.e.
-*   Personal informations like LastName, FirstName, Address, City, Country, ...
-*   Company information like the name of the customer's firm, his VAT number, ...
-*   The bought product (which version, with or without support), ...
-*   The paid price (netto, gross, paid VAT, currency, ...)
+
+- Personal informations like LastName, FirstName, Address, City, Country, ...
+- Company information like the name of the customer's firm, his VAT number, ...
+- The bought product (which version, with or without support), ...
+- The paid price (netto, gross, paid VAT, currency, ...)
 
 The need was also to make that list available in my spreadsheet software : create a worksheet with, as Data Source, a dynamic table.
 By refreshing the worksheet, the spreadsheet software run the URL, get a newer version of the list and update the sheet.  
@@ -35,6 +36,8 @@ Start a browser and run the file.
 
 You'll need to provide the password. By default, it's **`Joomla`** so use an URL like this one : [http://yoursite/show_table.php?password=Joomla](http://yoursite/show_table.php?password=Joomla)
 
+Note: take a look to the `users.php` which is a simplified and ready-to-use version for getting the list of your Joomla's users.
+
 ### To get a RAW output
 
 [http://yoursite/show_table.php?password=Joomla&format=RAW](http://yoursite/show_table.php?password=Joomla&format=RAW)
@@ -54,11 +57,10 @@ Creation of a data connection in Excel
 Then, in Excel, refresh the list to get the latest version of your data
 <img src="https://github.com/cavo789/joomla_free/blob/master/src/show_table/refresh.png" />
 
-
 ## Credits
 
 Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
 
------
+---
 
 [Get other free scripts](https://github.com/cavo789/joomla_free)
