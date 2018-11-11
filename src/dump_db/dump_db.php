@@ -1,10 +1,9 @@
 <?php
 
 /**
- * Author : AVONTURE Christophe - https://www.aesecure.com
+ * Author : AVONTURE Christophe - https://www.avonture.be.
  *
  * Generate a dump of the database, download it and remove temporary files from the server (NOT THIS SCRIPT)
- *
  */
 
 define('DEBUG', false);
@@ -16,82 +15,81 @@ if (!defined('DS')) {
 
 class aeSecureFct
 {
-
-   /**
-    * Safely read posted variables
-    *
-    * @param type $name          f.i. "password"
-    * @param type $type          f.i. "string"
-    * @param type $default       f.i. "default"
-    * @return type
-    */
+    /**
+     * Safely read posted variables.
+     *
+     * @param type  $name    f.i. "password"
+     * @param type  $type    f.i. "string"
+     * @param type  $default f.i. "default"
+     * @param mixed $base64
+     *
+     * @return type
+     */
     public static function getParam($name, $type = 'string', $default = '', $base64 = false)
     {
-
-        $tmp='';
+        $tmp   ='';
         $return=$default;
 
         if (isset($_POST[$name])) {
-            if (in_array($type, array('int','integer'))) {
+            if (in_array($type, ['int', 'integer'])) {
                 $return=filter_input(INPUT_POST, $name, FILTER_SANITIZE_NUMBER_INT);
-            } elseif ($type=='boolean') {
+            } elseif ('boolean' == $type) {
                 // false = 5 characters
-                $tmp=substr(filter_input(INPUT_POST, $name, FILTER_SANITIZE_STRING), 0, 5);
-                $return=(in_array(strtolower($tmp), array('on','true')))?true:false;
-            } elseif ($type=='string') {
+                $tmp   =substr(filter_input(INPUT_POST, $name, FILTER_SANITIZE_STRING), 0, 5);
+                $return=(in_array(strtolower($tmp), ['on', 'true'])) ? true : false;
+            } elseif ('string' == $type) {
                 $return=filter_input(INPUT_POST, $name, FILTER_SANITIZE_STRING);
-                if ($base64===true) {
+                if (true === $base64) {
                     $return=base64_decode($return);
                 }
-            } elseif ($type=='unsafe') {
+            } elseif ('unsafe' == $type) {
                 $return=$_POST[$name];
             }
         } else { // if (isset($_POST[$name]))
-
             if (isset($_GET[$name])) {
-                if (in_array($type, array('int','integer'))) {
+                if (in_array($type, ['int', 'integer'])) {
                     $return=filter_input(INPUT_GET, $name, FILTER_SANITIZE_NUMBER_INT);
-                } elseif ($type=='boolean') {
+                } elseif ('boolean' == $type) {
                     // false = 5 characters
-                    $tmp=substr(filter_input(INPUT_GET, $name, FILTER_SANITIZE_STRING), 0, 5);
-                    $return=(in_array(strtolower($tmp), array('on','true')))?true:false;
-                } elseif ($type=='string') {
+                    $tmp   =substr(filter_input(INPUT_GET, $name, FILTER_SANITIZE_STRING), 0, 5);
+                    $return=(in_array(strtolower($tmp), ['on', 'true'])) ? true : false;
+                } elseif ('string' == $type) {
                     $return=filter_input(INPUT_GET, $name, FILTER_SANITIZE_STRING);
-                    if ($base64===true) {
+                    if (true === $base64) {
                         $return=base64_decode($return);
                     }
-                } elseif ($type=='unsafe') {
+                } elseif ('unsafe' == $type) {
                     $return=$_GET[$name];
                 }
-            } // if (isset($_GET[$name]))
-        } // if (isset($_POST[$name]))
+            }
+        }
 
-        if ($type=='boolean') {
-            $return=(in_array($return, array('on','1'))?true:false);
+        if ('boolean' == $type) {
+            $return=(in_array($return, ['on', '1']) ? true : false);
         }
 
         return $return;
-    } // function getParam()
+    }
 
-   /**
-    * Return true when the call to the php script has been done through an ajax request
-    * @return type
-    */
+    /**
+     * Return true when the call to the php script has been done through an ajax request.
+     *
+     * @return type
+     */
     public static function isAjaxRequest()
     {
-        $bAjax=(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'));
+        $bAjax=(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ('XMLHttpRequest' == $_SERVER['HTTP_X_REQUESTED_WITH']));
+
         return $bAjax;
     }
-} // class aeSecureFct
+}
 
 class aeSecureSession
 {
-
     protected static $instance = null;
 
-    function __construct($bDestroy = false)
+    public function __construct($bDestroy = false)
     {
-
         // server should keep session data for AT LEAST 15 minutes
         ini_set('session.gc_maxlifetime', 900);
 
@@ -100,16 +98,17 @@ class aeSecureSession
 
         if (!isset($_SESSION)) {
             try {
-                if (session_id()=='') {
+                if ('' == session_id()) {
                     session_start();
                 }
             } catch (Exception $e) {
-                // On some hoster the path where to store session is incorrectly set and this gives a fatal error
+                // On some hoster the path where to store session is incorrectly
+                // set and this gives a fatal error
                 // Handle this and use the /tmp folder in this case.
                 @session_destroy();
                 session_save_path(sys_get_temp_dir());
                 session_start();
-            } // try
+            }
         }
 
         if ($bDestroy) {
@@ -124,74 +123,66 @@ class aeSecureSession
         }
 
         return true;
-    } // function __construct()
+    }
+
     public static function getInstance($bDestroy = false)
     {
-        if (self::$instance === null) {
+        if (null === self::$instance) {
             self::$instance = new aeSecureSession($bDestroy);
         }
+
         return self::$instance;
     }
+
     public static function set($name, $value)
     {
         $_SESSION[$name] = $value;
     }
+
     public static function get($name, $defaultvalue)
     {
-        $return=(isset($_SESSION[$name])?$_SESSION[$name]:'');
-        if ($return=='undefined') {
+        $return=(isset($_SESSION[$name]) ? $_SESSION[$name] : '');
+        if ('undefined' == $return) {
             $return='';
         }
-        return ($return!==''?$return:$defaultvalue);
+
+        return '' !== $return ? $return : $defaultvalue;
     }
-} // class aeSecureSession
+}
 
 class aeSecureDumpDatabase
 {
-
     protected static $instance = null;
 
-    function __construct()
+    public function __construct()
     {
-    } // function __construct()
-
-    public static function getInstance()
-    {
-        if (self::$instance === null) {
-            self::$instance = new aeSecureDumpDatabase();
-        }
-        return self::$instance;
     }
 
     public function doIt()
     {
-
         ini_set('max_execution_time', 3600);
 
-        // Get Joomla's configuration so dbname, host, user and password is retrieved for the current site
-
-        require('configuration.php');
+        // Get Joomla's configuration so dbname, host, user and password is
+        // retrieved for the current site
+        require 'configuration.php';
 
         $config = new JConfig();
 
         $folder=__DIR__;
 
         // Generate a temporary file with those credentials.
-
-        $credentialsFile=rtrim($folder, DS).DS.'mysql-credentials.txt';
+        $credentialsFile=rtrim($folder, DS) . DS . 'mysql-credentials.txt';
 
         $fp = fopen($credentialsFile, 'w');
         fwrite($fp, "[client]\nuser=$config->user\npassword=$config->password\nhost=$config->host");
         fclose($fp);
 
-        $dump=rtrim($folder, DS).DS.'dump.sql';
+        $dump=rtrim($folder, DS) . DS . 'dump.sql';
 
         // Dump the database
-
         system("mysqldump --defaults-extra-file=$credentialsFile $config->db > $dump");
 
         // If the dump isn't found, stop
-
         if (!file_exists($dump)) {
             echo "Error : could not find $dump, exit.";
             unlink($credentialsFile);
@@ -199,22 +190,21 @@ class aeSecureDumpDatabase
         }
 
         // No more needed
-
         unlink($credentialsFile);
 
         // Create a ZIP file if requested
-
         if (ZIP) {
-            $zip = new ZipArchive();
-            $zipFile=$dump.'.zip';
+            $zip    = new ZipArchive();
+            $zipFile=$dump . '.zip';
             $wReturn=$zip->open($zipFile, ZipArchive::CREATE);
-            if ($wReturn!==true) {
-                echo 'Error : unable to create '.$zipFile;
+            if (true !== $wReturn) {
+                echo 'Error : unable to create ' . $zipFile;
                 die();
             } else {
-                $wReturn=$zip->addFile($dump, basename($dump));     // basename() so the file will be zipped without his folder's structure
-                if ($wReturn!==true) {
-                    echo 'Error : unable to add '.$dump.' in the archive';
+                // basename() so the file will be zipped without his folder's structure
+                $wReturn=$zip->addFile($dump, basename($dump));
+                if (true !== $wReturn) {
+                    echo 'Error : unable to add ' . $dump . ' in the archive';
                     $zip->close();
                     die();
                 }
@@ -225,19 +215,18 @@ class aeSecureDumpDatabase
         }
 
         return $dump;
-    } // public function doIt()
+    }
 
     public function download($filename)
     {
-
         if (file_exists($filename)) {
-            header("Content-Type: ".(ZIP?"application/zip":"application/force-download"));
-            header("Content-Transfer-Encoding: binary");
-            header('Content-Length: '.filesize($filename));
-            header("Content-Disposition: attachment; filename=\"".$_SERVER['SERVER_NAME'].'.'.basename($filename).(ZIP?".zip":"")."\"");
-            header("Expires: 0");
-            header("Cache-Control: no-cache, must-revalidate");
-            header("Pragma: no-cache");
+            header('Content-Type: ' . (ZIP ? 'application/zip' : 'application/force-download'));
+            header('Content-Transfer-Encoding: binary');
+            header('Content-Length: ' . filesize($filename));
+            header('Content-Disposition: attachment; filename="' . $_SERVER['SERVER_NAME'] . '.' . basename($filename) . (ZIP ? '.zip' : '') . '"');
+            header('Expires: 0');
+            header('Cache-Control: no-cache, must-revalidate');
+            header('Pragma: no-cache');
 
             // Avoid Safari bug
             @ob_clean();
@@ -248,10 +237,16 @@ class aeSecureDumpDatabase
         } else {
             echo "Error : can't download, file $filename not found, exit.";
         }
+    }
+    public static function getInstance()
+    {
+        if (null === self::$instance) {
+            self::$instance = new aeSecureDumpDatabase();
+        }
 
-        return;
-    } // function download()
-} // class aeSecureDumpDatabase
+        return self::$instance;
+    }
+}
 
 // -------------------------------------------------
 //
@@ -259,38 +254,38 @@ class aeSecureDumpDatabase
 //
 // -------------------------------------------------
 
-if (DEBUG===true) {
-    ini_set("display_errors", "1");
-    ini_set("display_startup_errors", "1");
-    ini_set("html_errors", "1");
-    ini_set("docref_root", "http://www.php.net/");
-    ini_set("error_prepend_string", "<div style='color:red; font-family:verdana; border:1px solid red; padding:5px;'>");
-    ini_set("error_append_string", "</div>");
+if (DEBUG === true) {
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    ini_set('html_errors', '1');
+    ini_set('docref_root', 'http://www.php.net/');
+    ini_set('error_prepend_string', "<div style='color:red; font-family:verdana; border:1px solid red; padding:5px;'>");
+    ini_set('error_append_string', '</div>');
     error_reporting(E_ALL);
 } else {
-    ini_set('error_reporting', E_ALL & ~ E_NOTICE);
+    ini_set('error_reporting', E_ALL & ~E_NOTICE);
 }
 
 $task=aeSecureFct::getParam('task', 'string', '', false);
 
-if ($task!='') {
+if ('' != $task) {
     $aeSession=aeSecureSession::getInstance();
-    $aeDumpDB=aeSecureDumpDatabase::getInstance();
+    $aeDumpDB =aeSecureDumpDatabase::getInstance();
 
     switch ($task) {
         case 'doIt':
             $aeSession->set('sFileName', $aeDumpDB->doIt());
-            break;
 
+            break;
         case 'download':
             $fname=$aeSession->get('sFileName', '');
-            if ($fname!=='') {
+            if ('' !== $fname) {
                 echo $aeDumpDB->download($fname);
             }
-            break;
 
+            break;
         case 'killMe':
-            $return.='<p class="text-success">Le script '.__FILE__.' a &eacute;t&eacute; supprim&eacute; du serveur avec succ&egrave;s</p>';
+            $return .= '<p class="text-success">Le script ' . __FILE__ . ' a &eacute;t&eacute; supprim&eacute; du serveur avec succ&egrave;s</p>';
 
             // Kill this script
             unlink(__FILE__);
@@ -298,14 +293,12 @@ if ($task!='') {
             echo $return;
 
             break;
-    } // switch
+    }
 
-    unset($aeDumpDB);
-    unset($aeSession);
+    unset($aeDumpDB, $aeSession);
 
     die();
-} // if ($task!='')
-
+}
 
 ?>
 
@@ -313,15 +306,14 @@ if ($task!='') {
 <html lang="fr">
    <head>
       <meta charset="utf-8"/>
-      <meta name="author" content="aeSecure (c) Christophe Avonture" />
+      <meta name="author" content="Christophe Avonture" />
       <meta name="robots" content="noindex, nofollow" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8;" />
-      <title>aeSecure - Dump database</title>
+      <title>Dump database</title>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.25.3/css/theme.ice.min.css" rel="stylesheet" media="screen" />
-      <link href= "data:image/x-icon;base64,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" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.25.3/css/theme.ice.min.css" rel="stylesheet" media="screen" />      
       <style type="text/css">
          #Result{margin-top:25px;}
          .blink {animation: blink 1s steps(5, start) infinite; -webkit-animation: blink 1s steps(5, start) infinite;} @keyframes blink {to {visibility: hidden;}} @-webkit-keyframes blink {to {visibility: hidden;}}
@@ -336,7 +328,7 @@ if ($task!='') {
    </head>
    <body>
       <div class="container">
-         <div class="page-header"><h1>aeSecure - Dump database</h1></div>
+         <div class="page-header"><h1>Dump database</h1></div>
          <div class="container">
             <div id="intro">
                <p>Placez ce fichier à la racine de votre site Joomla et cliquez sur le bouton ci-dessous pour télécharger un backup, pris en temps réel, de votre base de données.</p>
@@ -365,7 +357,7 @@ if ($task!='') {
                   $('#Result').html('<div><span class="ajax_loading">&nbsp;</span><span style="font-style:italic;font-size:1.5em;">Un peu de patience svp...</span></div>');
                   $('#btnDoIt').prop("disabled", true);
                   $('#btnKillMe').prop("disabled", true);
-               },// beforeSend()
+               },
                async:true,
                type:"POST",
                url: "<?php echo basename(__FILE__); ?>",
@@ -382,7 +374,7 @@ if ($task!='') {
                   } else {
                       $("#Result").html('<p class="text-danger blink"><strong>Veuillez autoriser les popups sur ce site s\'il vous plaît.  Cliquez à nouveau sur ce bouton ensuite.</strong></p>');
                   }
-               }, // success
+               },
                error: function(Request, textStatus, errorThrown) {
                   $('#btnDoIt').prop("disabled", false);
                   $('#btnKillMe').prop("disabled", false);
@@ -397,8 +389,8 @@ if ($task!='') {
                   $msg = $msg + 'URL that has returned the error : <a target="_blank" href="'+$url+'">'+$url+'</a><br/><br/>';
                   $msg = $msg + '</div>';
                   $('#Result').html($msg);
-               } // error
-            }); // $.ajax()
+               }
+            });
          });
 
       // Remove this script
@@ -413,7 +405,7 @@ if ($task!='') {
                $('#Result').empty();
                $('#btnDoIt').prop("disabled", true);
                $('#btnKillMe').prop("disabled", true);
-            },// beforeSend()
+            },
             async:true,
             type:"POST",
             url: "<?php echo basename(__FILE__); ?>",
@@ -423,8 +415,8 @@ if ($task!='') {
                $('#intro').remove();
                $('#Result').html(data);
             }
-         }); // $.ajax()
-      }); // $('#KillMe').click()
+         });
+      });
 
       </script>
    </body>

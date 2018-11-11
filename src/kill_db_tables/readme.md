@@ -8,7 +8,7 @@ Or other scenarios.
 
 So, time to time, it's nice to clean the database by removing such unused tables.
 
-All these questions will find an answer with the `kill_db_tables.php` script.  
+All these questions will find an answer with the `kill_db_tables.php` script.
 
 ## Use it
 
@@ -19,12 +19,11 @@ Just copy the kill_db_tables.php script in the root folder of your Joomla's webs
 3.  Save the file (if you're using Notepad++, check in the Encoding menu that you've selected UTF8 NoBom as encoding)
 4.  Put the saved file in the root folder of your Joomla's website
 
-
 ## Run it
 
 Start a browser and run the file i.e go to f.i. [http://site/kill_db_tables.php](http://site/kill_db_tables.php).
 
-The script will start immediatly and will display a form with buttons.  The script will start an ajax request for retrieving the list of tables of your database (the one referenced in the `configuration.php` file).
+The script will start immediatly and will display a form with buttons. The script will start an ajax request for retrieving the list of tables of your database (the one referenced in the `configuration.php` file).
 
 Then follow the instructions displayed on the screen.
 
@@ -38,8 +37,8 @@ Don't forget to remove the script once you've finished with it.
 
 ## Credits
 
-Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
+Christophe Avonture | [https://www.avonture.be](https://www.avonture.be)
 
------
+---
 
 [Get other free scripts](https://github.com/cavo789/joomla_free)

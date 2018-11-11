@@ -33,7 +33,7 @@ Don't forget to remove the script once you've finished with it.
 
 ### Credits
 
-Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
+Christophe Avonture | [https://www.avonture.be](https://www.avonture.be)
 
 ### License
 
@@ -74,7 +74,7 @@ N'oubliez pas de supprimer le script une fois que vous en avez fini avec lui.
 
 ### Crédits
 
-Christophe Avonture |[https://www.aesecure.com](https://www.aesecure.com)(https://www.aesecure.com)
+Christophe Avonture |[https://www.avonture.be](https://www.avonture.be)(https://www.avonture.be)
 
 ### Licence
 

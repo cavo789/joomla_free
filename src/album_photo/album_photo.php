@@ -1,6 +1,6 @@
 <!--
 
-Author : AVONTURE Christophe - https://www.aesecure.com
+Author : AVONTURE Christophe - https://www.avonture.be
 
 Add an image carousel in your Joomla article. Just save images in a folder of your site (f.i. /images/blog/alias/), 
 add a specific tag in your article and thumbnails will be displayed
@@ -19,16 +19,16 @@ Setup (to do only once)
  
    Search : 
       \[cavo_photo (.*?)\]
- 	  
+      
    Replace by : 
       {source}
- 	  &lt?php
+      &lt?php
       $folder='\1';
       include JPATH_SITE.'/scripts/album_photo.php';
       ?&gt;
       {/source}   
- 	  
-   Set "Regular expressions" to True and be sure the rule is enabled.	   
+      
+   Set "Regular expressions" to True and be sure the rule is enabled.      
  
 Use it
 ------
@@ -53,106 +53,104 @@ Go to your site and refresh your article. You should now see your image carousel
 
 <?php
 
-   // NOTE : la variable $folder doit être initialisée par le code qui appelle celui-ci
-   // $folder doit être le nom d'un dossier se trouvant à la racine du site.   Par exemple "images/blog/album_photo".
+   // NOTE : la variable $folder doit ï¿½tre initialisï¿½e par le code qui appelle celui-ci
+   // $folder doit ï¿½tre le nom d'un dossier se trouvant ï¿½ la racine du site.   Par exemple "images/blog/album_photo".
 
-   // Initialiser à 1 si, lorsqu'on clique sur une vignette, si l'image doit s'afficher dans une fenêtre modale.
+   // Initialiser ï¿½ 1 si, lorsqu'on clique sur une vignette, si l'image doit s'afficher dans une fenï¿½tre modale.
    $useModal=1;
-  
+
    // ---------------------------------------------------------------------------------------------------------------
-    
+
    jimport('joomla.filesystem.file');
    jimport('joomla.filesystem.folder');
 
    // Nombre d'images par slides
    $imgBySlides=4;
-  
-   // Contrôle que le dossier existe
-  
-if (($folder!='') && (is_dir(JPATH_SITE.'/'.$folder))) {
-    $arrFiles = JFolder::files(JPATH_SITE.'/'.$folder, '.', 0, 0, array('..', '.', 'index.htm', 'index.html'));
+
+   // Contrï¿½le que le dossier existe
+
+if (('' != $folder) && (is_dir(JPATH_SITE . '/' . $folder))) {
+    $arrFiles = JFolder::files(JPATH_SITE . '/' . $folder, '.', 0, 0, ['..', '.', 'index.htm', 'index.html']);
 
     $count=count($arrFiles);
-  
-    if ($count>0) {
-        // Compte le nombre de slides : divise le nombre d'images trouvé par le nombre d'images par slides et augmente de 1 s'il reste un solde
-        $slides=intval($count/$imgBySlides);
-        if (($count % $imgBySlides)>0) {
-            $slides+=1;
+
+    if ($count > 0) {
+        // Compte le nombre de slides : divise le nombre d'images trouvï¿½ par le nombre d'images par slides et augmente de 1 s'il reste un solde
+        $slides=intval($count / $imgBySlides);
+        if (($count % $imgBySlides) > 0) {
+            ++$slides;
         }
 
         // -----------------------------------------------------------------------
         //
-        // Génère les fenêtes modales
-         
-        if ($useModal==1) {
+        // Gï¿½nï¿½re les fenï¿½tes modales
+
+        if (1 == $useModal) {
             echo '<div id="imgModal">';
-              
+
             $wPicture=0;
-              
-            for ($i=0; $i<$slides; $i++) {
-                for ($j=0; $j<$imgBySlides; $j++) {
+
+            for ($i=0; $i < $slides; $i++) {
+                for ($j=0; $j < $imgBySlides; $j++) {
                     if (isset($arrFiles[$wPicture])) {
-                        $img=JURI::base().$folder.'/'.$arrFiles[$wPicture];
-                         echo '<div class="modal fade" id="mod_img'.$wPicture.'" data-remote=""><img src="'.$img.'" title="'.$img.'" alt="'.$arrFiles[$wPicture].'"/></div>' ;
+                        $img=JURI::base() . $folder . '/' . $arrFiles[$wPicture];
+                        echo '<div class="modal fade" id="mod_img' . $wPicture . '" data-remote=""><img src="' . $img . '" title="' . $img . '" alt="' . $arrFiles[$wPicture] . '"/></div>';
                     } // if (isset($arrFiles[$wPicture])) {
 
-                    $wPicture+=1;
+                    ++$wPicture;
                 } // for ($j=0;$j<$imgBySlides;$j++) {
             } // for ($i=0;$i<$slides; $i++) {
 
             echo '</div><!--/imgModal-->';
         } // if ($useModal==1)
-         
+
         // -----------------------------------------------------------------------
-         
-        // Génère le caroussel et les vignettes
-         
+
+        // Gï¿½nï¿½re le caroussel et les vignettes
+
         echo '<div class="well">';
         echo '<div id="myCarousel" class="carousel slide">';
         echo '<ol class="carousel-indicators">';
 
-        for ($i=0; $i<$slides; $i++) {
-            echo '<li data-target="#myCarousel" data-slide-to="'.$i.'" class="'.($i==0?'active':'').'"></li>';
+        for ($i=0; $i < $slides; $i++) {
+            echo '<li data-target="#myCarousel" data-slide-to="' . $i . '" class="' . (0 == $i ? 'active' : '') . '"></li>';
         }
-      
+
         echo '</ol>';
         echo '<div class="carousel-inner">';
 
         $wPicture=0;
-        for ($i=0; $i<$slides; $i++) {
-            echo '<div class="item '.($i==0?'active':'').'">';
+        for ($i=0; $i < $slides; $i++) {
+            echo '<div class="item ' . (0 == $i ? 'active' : '') . '">';
             echo '<div class="row-fluid">';
-              
-            for ($j=0; $j<$imgBySlides; $j++) {
-                if (isset($arrFiles[$wPicture])) {
-                    $img=JURI::base().$folder.'/'.$arrFiles[$wPicture];
-                     
-                    // Contrôle s'il y a une miniature dans un sous-dossier nommé Thumbs.  Si oui, utilise la miniature; si non, utilise l'image originale.
-                    $imgThumb=JPATH_SITE.'/'.$folder.'/Thumbs/'.$arrFiles[$wPicture];
-                    $imgThumb = (is_file($imgThumb)?str_replace(JPATH_SITE, JURI::base(), $imgThumb):$img);
 
-                    echo '<div class="span3"><a '.($useModal==1 ? 'data-target="#mod_img'.$wPicture.'" data-toggle="modal"':'').' href="'.$img.'" class="thumbnail"><img src="'.$imgThumb.'" title="'.$imgThumb.'" alt="'.$arrFiles[$wPicture].'" style="max-width:100%;" /></a></div>';
+            for ($j=0; $j < $imgBySlides; $j++) {
+                if (isset($arrFiles[$wPicture])) {
+                    $img=JURI::base() . $folder . '/' . $arrFiles[$wPicture];
+
+                    // Contrï¿½le s'il y a une miniature dans un sous-dossier nommï¿½ Thumbs.  Si oui, utilise la miniature; si non, utilise l'image originale.
+                    $imgThumb =JPATH_SITE . '/' . $folder . '/Thumbs/' . $arrFiles[$wPicture];
+                    $imgThumb = (is_file($imgThumb) ? str_replace(JPATH_SITE, JURI::base(), $imgThumb) : $img);
+
+                    echo '<div class="span3"><a ' . (1 == $useModal ? 'data-target="#mod_img' . $wPicture . '" data-toggle="modal"' : '') . ' href="' . $img . '" class="thumbnail"><img src="' . $imgThumb . '" title="' . $imgThumb . '" alt="' . $arrFiles[$wPicture] . '" style="max-width:100%;" /></a></div>';
                 } else { // if (isset($arrFiles[$wPicture]))
-                 
                     echo '<div class="span3">&nbsp;</div>';
                 } // if (isset($arrFiles[$wPicture]))
 
-                $wPicture+=1;
+                ++$wPicture;
             } // for ($j=0;$j<$imgBySlides; $j++)
-              
+
             echo '</div></div>';
         } // for ($i=0;$i<slides;$i++)
-      
+
         echo '</div><!--/carousel-inner-->';
-        echo '<a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>';
-        echo '<a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>';
+        echo '<a class="left carousel-control" href="#myCarousel" data-slide="prev">ï¿½</a>';
+        echo '<a class="right carousel-control" href="#myCarousel" data-slide="next">ï¿½</a>';
         echo '</div><!--/myCarousel-->';
         echo '</div><!--/well-->';
     } // if ($count>0)
 } else { // if (is_dir($folder))
-  
-    echo '<h1 class="alert alert-danger">Le dossier '.$folder.' est inexistant.</h1>';
+    echo '<h1 class="alert alert-danger">Le dossier ' . $folder . ' est inexistant.</h1>';
 } // if (is_dir($folder))
 
 ?>

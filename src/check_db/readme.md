@@ -4,7 +4,7 @@ Is your Joomla's database up and running ? The idea behind `check_db.php` is ver
 
 ## Use it
 
-Just copy the check_db.php script in the root folder of your Joomla's website.  Use your FTP client to do this.
+Just copy the check_db.php script in the root folder of your Joomla's website. Use your FTP client to do this.
 
 1.  Get a raw version of the script : click on the raw button or go to this URL : https://raw.githubusercontent.com/cavo789/joomla_free/master/src/check_db/check_db.php
 2.  On your computer, start a text editor like Notepad or Notepad++ and copy/paste there the code
@@ -27,8 +27,8 @@ Don't forget to remove the script once you've finished with it.
 
 ## Credits
 
-Christophe Avonture | [https://www.aesecure.com](https://www.aesecure.com)
+Christophe Avonture | [https://www.avonture.be](https://www.avonture.be)
 
------
+---
 
 [Get other free scripts](https://github.com/cavo789/joomla_free)
