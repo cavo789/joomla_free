@@ -45,7 +45,7 @@ class aeSecureFct
             } elseif ('unsafe' == $type) {
                 $return=$_POST[$name];
             }
-        } else { // if (isset($_POST[$name]))
+        } else {
             if (isset($_GET[$name])) {
                 if (in_array($type, ['int', 'integer'])) {
                     $return=filter_input(INPUT_GET, $name, FILTER_SANITIZE_NUMBER_INT);
