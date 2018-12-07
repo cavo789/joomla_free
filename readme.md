@@ -1,3 +1,5 @@
+![Banner](images/banner.jpg)
+
 # Some scripts and snippets to simplify your tasks Joomla
 
 In this repository, you'll find a few scripts that I've written for my own use. Perhaps one of these scripts will be useful for you too.
